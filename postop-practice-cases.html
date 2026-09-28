@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Post-Operative Practice Cases</title><style>:root{--navy:#012D46;--teal:#00778B;--green:#00783C;--ink:#1F2A33;--mute:#5B6770;--tint:#EAF3F5;--tint2:#EEF6F0;--amber:#9A5B00;--amberT:#FBF1E2;--line:#C9D6DC}
+*{box-sizing:border-box}
+body{margin:0;font-family:Calibri,"Segoe UI",Arial,sans-serif;color:var(--ink);background:#F4F7F8;line-height:1.45;font-size:17px}
+.wrap{max-width:860px;margin:0 auto;padding:0 18px 60px}
+header.top{background:var(--navy);color:#fff;padding:26px 0 22px}
+header.top .wrap{padding-bottom:0}
+.eyebrow{font-size:12.5px;letter-spacing:2px;text-transform:uppercase;color:#8FC7D1;font-weight:700}
+h1{margin:6px 0 4px;font-size:30px;line-height:1.15}
+.sub{color:#BFE3E8;font-size:17px}
+.howto{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:22px 0 18px}
+.howto b{color:var(--navy)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;cursor:pointer;font:inherit;font-size:15px;color:var(--navy)}
+.tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.tab .done{color:var(--green);font-weight:700;margin-left:6px}
+.tab.on .done{color:#9FE0B5}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:14px 0}
+.card.detour{border-color:#E3C79A;background:#FFFCF6}
+.lab{font-size:12.5px;letter-spacing:1.8px;text-transform:uppercase;font-weight:700;color:var(--teal);margin-bottom:6px}
+.card.detour .lab{color:var(--amber)}
+.scene{margin:0 0 12px}
+.q{font-weight:700;color:var(--navy);font-size:18.5px;margin:12px 0 10px}
+table.find{width:100%;border-collapse:collapse;margin:8px 0 6px;font-size:15.5px}
+table.find td{padding:7px 10px;border-bottom:1px solid #E3EAEE;vertical-align:top}
+table.find td:first-child{font-weight:700;color:var(--navy);width:34%}
+.opt{display:block;width:100%;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:12px 14px;margin:8px 0;font:inherit;font-size:16.5px;cursor:pointer;color:var(--ink)}
+.opt:hover:not([disabled]){border-color:var(--teal);background:#F7FBFC}
+.opt[disabled]{cursor:default;opacity:.55}
+.opt.picked{opacity:1;border-width:2px}
+.opt.picked.strong{border-color:var(--green);background:var(--tint2)}
+.opt.picked.partly{border-color:var(--teal);background:var(--tint)}
+.opt.picked.detour{border-color:var(--amber);background:var(--amberT)}
+.opt.tried{text-decoration:line-through;opacity:.5}
+.fb{border-radius:10px;padding:13px 16px;margin:12px 0 4px;font-size:16px}
+.fb.strong{background:var(--tint2);border:1px solid #BFDCC9}
+.fb.partly{background:var(--tint);border:1px solid #BBD8DE}
+.fb.detour{background:var(--amberT);border:1px solid #E3C79A}
+.chip{display:inline-block;font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;border-radius:6px;padding:2px 8px;margin-bottom:6px}
+.chip.strong{color:var(--green);border:1px solid var(--green)}
+.chip.partly{color:var(--teal);border:1px solid var(--teal)}
+.chip.detour{color:var(--amber);border:1px solid var(--amber)}
+.src{display:block;color:var(--mute);font-size:13.5px;font-style:italic;margin-top:6px}
+.go{margin-top:12px;background:var(--navy);color:#fff;border:0;border-radius:8px;padding:10px 18px;font:inherit;font-size:16px;cursor:pointer}
+.go.ghost{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
+.docbtn{background:var(--tint);color:var(--navy);border:1px solid #BBD8DE;border-radius:8px;padding:6px 12px;font:inherit;font-size:14.5px;cursor:pointer;margin:2px 0 8px}
+.log{margin:10px 0}
+.log .item{display:flex;gap:10px;align-items:baseline;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:6px 0;font-size:15px}
+.log .item .k{color:var(--mute);min-width:128px;font-size:13.5px;text-transform:uppercase;letter-spacing:1px;font-weight:700}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;flex:none;position:relative;top:1px}
+.dot.strong{background:var(--green)}.dot.partly{background:var(--teal)}.dot.detour{background:var(--amber)}
+.modal{position:fixed;inset:0;background:rgba(1,45,70,.55);display:none;align-items:flex-start;justify-content:center;padding:40px 14px;overflow:auto;z-index:9}
+.modal.on{display:flex}
+.modal .sheet{background:#fff;border-radius:12px;max-width:760px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.modal .hd{background:var(--navy);color:#fff;padding:12px 18px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center;font-weight:700;letter-spacing:1px;font-size:14px;text-transform:uppercase}
+.modal .hd button{background:none;border:1px solid #8FC7D1;color:#fff;border-radius:6px;padding:4px 10px;cursor:pointer;font:inherit;font-size:14px}
+.modal table{width:100%;border-collapse:collapse}
+.modal td{padding:9px 16px;border-bottom:1px solid #E3EAEE;vertical-align:top;font-size:15.5px}
+.modal td:first-child{font-weight:700;color:var(--navy);width:32%}
+.sum h2{color:var(--navy);margin:4px 0 8px;font-size:22px}
+.tally{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 14px}
+.tally div{flex:1;min-width:120px;border-radius:10px;padding:10px 12px;text-align:center}
+.tally b{display:block;font-size:26px}
+.note{background:var(--tint);border-radius:10px;padding:12px 16px;margin:10px 0}
+footer{color:var(--mute);font-size:14px;text-align:center;margin-top:26px}
+@media print{.opt,.go,.docbtn,.tabs{display:none}}
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:10px 0 4px}
+.rolebtn{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:12px;text-align:left;cursor:pointer;font:inherit;color:var(--navy)}
+.rolebtn b{display:block;font-size:17px}.rolebtn span{font-size:13.5px;color:var(--mute)}
+.rolebtn.on{border-color:var(--teal);background:var(--tint)}
+.warn{font-size:14px;color:var(--amber);margin:6px 0 0}
+.field{margin:12px 0}.field label{display:block;font-weight:700;color:var(--navy);font-size:15.5px}
+.field .hint{font-size:13.5px;color:var(--mute);margin:2px 0 6px}
+.field textarea{width:100%;min-height:58px;border:1.5px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit;font-size:15.5px;resize:vertical}
+.nudge{font-size:14px;border-radius:8px;padding:6px 10px;margin-top:6px}
+.nudge.ok{background:var(--tint2);color:var(--green)}.nudge.fix{background:var(--amberT);color:var(--amber)}
+.callcard{background:var(--navy);color:#fff;border-radius:12px;padding:18px 22px;margin:12px 0}
+.callcard .lab{color:#8FC7D1}.callcard ol{margin:6px 0 0 18px;padding:0}.callcard li{margin:6px 0;font-size:18px}
+.callcard li small{display:block;color:#8FC7D1;font-size:12px;letter-spacing:1px;text-transform:uppercase}
+.cue{display:block;width:100%;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:10px 12px;margin:7px 0;font:inherit;font-size:15.5px;cursor:pointer;color:var(--ink)}
+.cue:hover{border-color:var(--teal)}.cue.used{border-color:var(--teal);background:var(--tint)}
+.say{background:var(--navy);color:#fff;border-radius:10px;padding:12px 16px;margin:6px 0 10px;font-size:17px}
+.say small{display:block;color:#8FC7D1;font-size:12px;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}
+.secret{border:1.5px dashed var(--amber);background:var(--amberT);border-radius:10px;padding:10px 14px;margin:8px 0}
+.secret.open{border-style:solid;border-color:var(--green);background:var(--tint2)}
+.timer{display:flex;align-items:center;gap:12px;margin:6px 0 10px}.timer b{font-size:26px;color:var(--navy);min-width:70px}
+.chk{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:10px 12px;margin:7px 0;cursor:pointer}
+.chk .box{width:22px;height:22px;border:2px solid var(--line);border-radius:5px;flex:none;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff}
+.chk.done{border-color:var(--green);background:var(--tint2)}.chk.done .box{background:var(--green);border-color:var(--green)}
+.chk .t{flex:1}.chk .stamp{font-size:13px;color:var(--green);font-weight:700}
+.trace{list-style:none;padding:0;margin:6px 0}.trace li{padding:6px 0;border-bottom:1px solid #E3EAEE;font-size:15px}
+.trace li span{color:var(--mute);font-size:13px;margin-right:8px}
+</style></head>
+<body>
+<header class="top"><div class="wrap"><div class="eyebrow">DPHT 7441  ·  Module 6  ·  Sync Session · Practice across the lower quadrant</div><h1>Post-Operative Practice Cases</h1><div class="sub">Knee · Foot and ankle · Lumbar spine</div></div></header>
+<div class="wrap">
+<div class="howto"><b>How this works.</b> Three patients, three regions, the same reasoning you used for Frank: read the report and protocol, prioritize, build each phase, set the gates, and prepare the patient for return to activity. Each case takes about 10 to 15 minutes. Work through all three at some point; the tabs can be done in any order. Choices lock once made. A detour shows you where a choice leads, then returns you to the main path.</div>
+<div id="app"></div>
+<footer>Jennifer Morgan, PT, DPT  ·  UNT Health Science Center Fort Worth<br>Nothing is saved, submitted, or graded. This is practice for you.</footer>
+</div>
+<script>/*HEAD Post-Operative Practice Cases | Sync Session · Practice across the lower quadrant | Knee · Foot and ankle · Lumbar spine | <b>How this works.</b> Three patients, three regions, the same reasoning you used for Frank: read the report and protocol, prioritize, build each phase, set the gates, and prepare the patient for return to activity. Each case takes about 10 to 15 minutes. Work through all three at some point; the tabs can be done in any order. Choices lock once made. A detour shows you where a choice leads, then returns you to the main path. HEAD*/
+var KNEE='Post-Surgical Knee recording (Lentini): ACL-R and meniscal procedures';
+var FA='Foot and Ankle Postoperative recording: Achilles repair (Kisner & Borstad, Ch. 22; AAOS CPG)';
+var LUM='Post-Surgical Lumbar recording (Lentini): restrictions, red flags, phased rehabilitation';
+window.CASE = {
+docs:{
+ kop:{title:'Kayla: operative report and protocol', rows:[
+  ['Patient','Kayla Brooks, 19, collegiate soccer forward'],['Procedure','Arthroscopic right ACL reconstruction, bone-patellar tendon-bone autograft. Repair of a medial meniscus tear.'],
+  ['Postoperative orders','Brace. Weight-bearing and knee flexion limits per meniscal repair protocol. Physical therapy per protocol.'],
+  ['Protocol, 0 to 12 weeks','Protect the graft and the repair. Restore extension. Quad activation. Progress flexion gradually. No loaded deep flexion.'],
+  ['Protocol, 12 weeks','Begin running.'],['Protocol, 6 months','Plyometrics and agility. Return to sport per surgeon, typically 9 to 12 months.']]},
+ aop:{title:'Andre: operative report and protocol', rows:[
+  ['Patient','Andre Collins, 36, recreational basketball'],['Procedure','Primary open repair, acute right Achilles tendon rupture'],
+  ['0 to 2 weeks','Posterior orthosis or boot at 20 degrees of equinus. Partial weight-bearing with crutches.'],
+  ['2 to 4 weeks','CAM boot, dorsiflexion limited to -20 degrees. Weight-bearing as tolerated in the boot; wean crutches.'],
+  ['4 to 6 weeks','CAM to -10 degrees (week 4), then 0 degrees (week 5). Full weight-bearing in the boot.'],
+  ['6 to 8 weeks','CAM to +10 degrees (week 6). Shoes with 1 to 1.5 cm bilateral heel lifts by week 7.'],
+  ['After 8 weeks','Wean heel lifts by week 10. Full weight-bearing in regular shoes.']]},
+ lop:{title:'Marisol: operative report and orders', rows:[
+  ['Patient','Marisol Vega, 54, preschool teacher'],['Procedure','L4-L5 posterior lumbar fusion with pedicle screws, rods, and bone graft, for degenerative spondylolisthesis with persistent symptoms despite conservative care'],
+  ['Postoperative orders','Avoid bending, lifting, and twisting. Log-roll for bed mobility. Lifting limit 10 lb. Walk daily. Physical therapy per surgeon at 4 weeks.'],
+  ['Follow-up','Surgeon visit with imaging at 3 months']]}
+},
+cases:[
+{ id:'kayla', tab:'Knee · Kayla, ACL-R', start:'k1', docs:['kop'], introLabel:'The patient',
+ intro:'Kayla Brooks is 19, a collegiate soccer forward, after a right ACL reconstruction with a bone-patellar tendon-bone autograft and a medial meniscus repair. Her coach has already asked when she will be back for the spring season.',
+ endTitle:'Kayla, worked through', think:['The protocol gave Kayla a running date and a return-to-sport range. Which of her gates had a number attached, and which did not?','What would you say to her coach, and what would you not say without Kayla\'s permission?'],
+ nodes:{
+  k1:{label:'Decision 1 of 4 · The report', short:'Report line', doc:'kop',
+   q:'Which line of Kayla\'s report most changes her early restrictions compared with an isolated ACL reconstruction?',
+   opts:[
+    {t:'Arthroscopic approach', short:'Arthroscopic', r:'detour', next:'k1d', fb:'Less soft-tissue disturbance matters, but it is not what adds restrictions here. Take the detour.'},
+    {t:'Bone-patellar tendon-bone autograft', short:'Graft type', r:'partly', next:'k2', fb:'Graft type matters and your protocol should account for it. But the line that adds weight-bearing and flexion restrictions is the meniscus repair.', src:KNEE},
+    {t:'Repair of a medial meniscus tear', short:'Meniscus repair', r:'strong', next:'k2', fb:'A meniscal repair adds its own weight-bearing and flexion restrictions, because deep flexion, especially loaded, increases stress on the meniscus. Restrictions are tear-dependent and surgeon-dependent.', src:KNEE}]},
+  k1d:{detour:true, label:'What adds the restriction',
+   q:'Meniscal repair rehabilitation differs from ACL-R rehabilitation in which way?',
+   opts:[
+    {t:'Weight-bearing and ROM restrictions protect the repair; flexion is restored cautiously and loaded deep flexion is limited', r:'strong', next:'k2', fb:'Right. Weight-bearing is introduced with axial loading in full extension, since compression stresses the meniscus less than shear or torsion. Back to the main path.', src:KNEE},
+    {t:'None; the ACL protocol covers it', r:'detour', retry:true, fb:'A repaired meniscus needs protection an ACL graft alone does not.'}]},
+  k2:{label:'Decision 2 of 4 · Early phase', short:'Early priority',
+   scene:'Week 2. Kayla lacks 5 degrees of knee extension and has a visible quad lag. Flexion is 80 degrees.',
+   q:'What is the priority?',
+   opts:[
+    {t:'Full knee extension and quad activation, together', short:'Extension and quad activation', r:'strong', next:'k3', fb:'Extension ROM and quad activation go together; achieving full extension and good quad control early sets the patient up for success. NMES supports quad activation from the start (knee ligament CPG and meniscal CPG). Early goals also include managing pain and effusion.', src:KNEE},
+    {t:'Push flexion hard now to prevent stiffness', short:'Push flexion', r:'detour', next:'k2d', fb:'The repair changes this. Take the detour.'},
+    {t:'Begin closed-chain squats to 90 degrees to build strength', short:'Squats to 90', r:'detour', next:'k2d', fb:'Loaded deep flexion is what the repair restricts. Take the detour.'}]},
+  k2d:{detour:true, label:'Protecting the repair',
+   q:'Why is flexion restored cautiously after a meniscal repair?',
+   opts:[
+    {t:'Deep flexion, especially loaded, increases stress on the healing meniscus', r:'strong', next:'k3', fb:'Right. Restore flexion without pushing through pain, and keep extension and quad activation as the early priorities. Back to the main path.', src:KNEE},
+    {t:'Flexion does not matter after ACL-R', r:'detour', retry:true, fb:'Flexion matters. It is the timing and load that the repair governs.'}]},
+  k3:{label:'Decision 3 of 4 · The protocol says run', short:'Running at 12 weeks', doc:'kop',
+   scene:'Week 12. The protocol says begin running. Kayla has full ROM and a trace effusion. Handheld dynamometry shows her right quadriceps at 64% of her left.',
+   q:'Does she start running?',
+   opts:[
+    {t:'Yes. The protocol says 12 weeks, and her ROM is full.', short:'Run per protocol', r:'detour', next:'k3d', fb:'The date arrived. Did the criterion? Take the detour.'},
+    {t:'Not yet. Keep building quad strength, retest objectively, and start the interval running program when strength supports it. Tell the surgeon why.', short:'Hold, strengthen, retest', r:'strong', next:'k4', fb:'Return to running should be based on restoration of quad strength; not everyone is ready at 12 weeks. Objective strength testing (isokinetic or handheld dynamometry) is how you know.', src:KNEE},
+    {t:'No running until 9 months', short:'Not until 9 months', r:'partly', next:'k4', fb:'Safe, but it trades one calendar for another. The criterion is quad strength, not a later date.'}]},
+  k3d:{detour:true, label:'Calendar or criterion',
+   q:'What does the 64% tell you?',
+   opts:[
+    {t:'Her quad strength has not been restored, and running readiness rests on quad strength', r:'strong', next:'k4', fb:'Right. Replace the protocol\'s date with the criterion, and tell the surgeon which finding is holding her. Back to the main path.', src:KNEE},
+    {t:'Nothing; ROM is the running criterion', r:'detour', retry:true, fb:'Full ROM is necessary, but the recording ties running to quad strength.'}]},
+  k4:{label:'Decision 4 of 4 · Return to sport', short:'Return to sport',
+   scene:'Month 8. Kayla has no pain, no effusion, and full symmetrical ROM. Her hop tests are symmetrical. On a psychological readiness scale, she scores low, and she admits she is afraid to cut.',
+   q:'What does her return-to-sport decision need?',
+   opts:[
+    {t:'Clearance now; the hop tests are symmetrical', short:'Clear on hops', r:'detour', next:'k4d', fb:'One domain of a battery. Take the detour.'},
+    {t:'The full battery (patient-reported outcomes including psychological readiness, symptoms, ROM, strength and power, hop testing), a graduated return-to-sport progression, and a shared decision with Kayla and the surgeon', short:'Full battery and shared decision', r:'strong', next:'END', fb:'Time alone should not determine readiness, though surgeons typically have minimum time criteria. Psychological readiness is an often-overlooked part of ACL-R rehab; her fear is a finding, not a footnote.', src:KNEE},
+    {t:'Wait until 12 months regardless of testing', short:'Wait for 12 months', r:'partly', next:'END', fb:'A surgeon may set a minimum time. But time is a floor, not the decision; she still needs the battery and a plan for her fear.'}]},
+  k4d:{detour:true, label:'What the hops cannot see',
+   q:'Which part of Kayla\'s picture do hop tests miss?',
+   opts:[
+    {t:'Psychological readiness', r:'strong', next:'END', fb:'Right. Her low score and her fear of cutting belong in the decision. The recording lists psychological readiness in the return-to-sport criteria alongside strength, power, and performance.', src:KNEE},
+    {t:'Nothing important', r:'detour', retry:true, fb:'She told you she is afraid to cut.'}]}
+ }},
+{ id:'andre', tab:'Ankle · Andre, Achilles repair', start:'a1', docs:['aop'], introLabel:'The patient',
+ intro:'Andre Collins is 36, a recreational basketball player, after a primary open repair of an acute right Achilles tendon rupture. His protocol follows early weight-bearing and early motion.',
+ endTitle:'Andre, worked through', think:['Andre\'s protocol is almost entirely time-based. Where did you add a criterion to it?','Which of his gates would you explain to him with a picture of his heel rise, and why might that work better than a number?'],
+ nodes:{
+  a1:{label:'Decision 1 of 4 · Week 5', short:'Home stretching', doc:'aop',
+   scene:'Week 5. Andre is in the CAM boot at 0 degrees. He is frustrated with stiffness and shows you his home stretch: standing at the wall out of the boot, right foot back, leaning in "as far as it goes."',
+   q:'What do you tell him?',
+   opts:[
+    {t:'Keep going; stretching is part of this phase', short:'Keep stretching', r:'detour', next:'a1d', fb:'Stretching is in this phase, with a limit. Take the detour.'},
+    {t:'Stop the wall stretch. Dorsiflexion stretching stays within 10 degrees beyond neutral until 8 weeks. Low-load resistance and seated heel raises go in instead.', short:'Stop, stay within 10 degrees', r:'strong', next:'a2', fb:'Dorsiflexion stretching is limited to no more than 10 degrees beyond neutral until 8 weeks. Protect the repaired tendon above all else.', src:FA},
+    {t:'No stretching at all until 12 weeks', short:'No stretching until 12 weeks', r:'partly', next:'a2', fb:'Protective, but more restrictive than the protocol needs. Controlled dorsiflexion within the limit is part of moderate protection.'}]},
+  a1d:{detour:true, label:'The limit',
+   q:'What is the dorsiflexion stretching limit in moderate protection after Achilles repair?',
+   opts:[
+    {t:'No more than 10 degrees beyond neutral until 8 weeks', r:'strong', next:'a2', fb:'Right. An unlimited standing stretch loads the healing repair past that limit. Back to the main path.', src:FA},
+    {t:'As far as is comfortable', r:'detour', retry:true, fb:'Comfort is not the limit on a healing tendon.'}]},
+  a2:{label:'Decision 2 of 4 · Week 9', short:'The pop',
+   scene:'Week 9. Andre slipped on a wet stair two days ago and felt a pop at the back of his ankle. Today, calf compression does not produce plantarflexion.',
+   q:'What do you do?',
+   opts:[
+    {t:'Reduce his exercise load and recheck next visit', short:'Reduce and recheck', r:'detour', next:'a2d', fb:'Look at what the Thompson test just told you. Take the detour.'},
+    {t:'Stop rehabilitation and refer him back to the surgeon promptly', short:'Stop and refer', r:'strong', next:'a3', fb:'An abnormal Thompson squeeze test after repair warrants surgical review. Rerupture occurs in about 3% and is managed with revision repair or graft reconstruction.', src:FA}]},
+  a2d:{detour:true, label:'The Thompson test',
+   q:'What does an abnormal Thompson squeeze test mean after an Achilles repair?',
+   opts:[
+    {t:'Possible loss of tendon continuity; it warrants surgical review', r:'strong', next:'a3', fb:'Right. Stop and refer. Back to the main path. (For the rest of the case, assume the surgeon confirmed the repair was intact.)', src:FA},
+    {t:'Normal stiffness at this stage', r:'detour', retry:true, fb:'Calf compression should produce plantarflexion when the tendon is continuous.'}]},
+  a3:{label:'Decision 3 of 4 · Week 11', short:'Loading progression',
+   scene:'Week 11. The surgeon confirmed the repair is intact. Andre does seated and standing bilateral heel raises without pain. He asks to start box jumps.',
+   q:'What comes next?',
+   opts:[
+    {t:'Box jumps and hopping now', short:'Plyometrics now', r:'detour', next:'a3d', fb:'Too early. Take the detour.'},
+    {t:'Unilateral heel raises now, with eccentric heel lowering and plyometrics later in the return-to-function phase', short:'Unilateral heel raises now', r:'strong', next:'a4', fb:'Unilateral heel raises belong at 10 to 12 weeks. Eccentric heel lowering, plyometrics, and the treadmill jog-to-run progression come in the 12 to 16+ week phase. Gradual eccentric loading is central to tendon remodeling.', src:FA},
+    {t:'Stay with bilateral heel raises until 16 weeks', short:'Bilateral until 16 weeks', r:'partly', next:'a4', fb:'Safe, but it holds him back from the unilateral work his phase allows.'}]},
+  a3d:{detour:true, label:'Where plyometrics belong',
+   q:'When do plyometrics enter Andre\'s progression?',
+   opts:[
+    {t:'In the minimum protection and return-to-function phase, after unilateral heel raises', r:'strong', next:'a4', fb:'Right. Back to the main path.', src:FA},
+    {t:'Whenever bilateral heel raises are pain-free', r:'detour', retry:true, fb:'Pain-free bilateral heel raises open unilateral heel raises, not plyometrics.'}]},
+  a4:{label:'Decision 4 of 4 · Month 5', short:'Return to sport',
+   scene:'Month 5. Andre wants to play in his Sunday league. Pain-free walking and running. Hop testing: 92% of his left side. Single-leg heel rise height: 78% of his left side.',
+   q:'Is he cleared to start returning to basketball?',
+   opts:[
+    {t:'Yes. His hop testing is above 90%.', short:'Clear on hops', r:'detour', next:'a4d', fb:'One of three criteria. Take the detour.'},
+    {t:'Not yet. Clearance needs clinical strength and ROM, pain-free walking and running with hop LSI of at least 90%, and heel rise height symmetry. His heel rise is 78%.', short:'Not yet: heel rise', r:'strong', next:'END', fb:'Clearance requires passing all three criteria. Heel rise height is the most sensitive clinical measure of Achilles recovery. The return-to-sport process typically begins at 4 to 6 months; time is a floor, not a ceiling.', src:FA}]},
+  a4d:{detour:true, label:'Three criteria',
+   q:'Which criterion is Andre missing?',
+   opts:[
+    {t:'Single-leg heel rise height symmetry', r:'strong', next:'END', fb:'Right. 78% is his limiting finding, and it tells you where his loading goes next. Full unrestricted sport typically comes at 9 to 12 months. Education: warm-up and progressive eccentric loading reduce rerupture risk.', src:FA},
+    {t:'None; hop LSI is the criterion', r:'detour', retry:true, fb:'Hop LSI is one of three.'}]}
+ }},
+{ id:'marisol', tab:'Lumbar · Marisol, L4-L5 fusion', start:'l1', docs:['lop'], introLabel:'The patient',
+ intro:'Marisol Vega is 54, a preschool teacher, 4 weeks after an L4-L5 posterior lumbar fusion for degenerative spondylolisthesis. Her surgeon wants physical therapy to begin now.',
+ endTitle:'Marisol, worked through', think:['Fusion and microdiscectomy both "take pressure off," but the early plan is very different. How would you explain the difference to Marisol in one sentence?','Her fear was not in the operative report. Where would you have found it?'],
+ nodes:{
+  l1:{label:'Decision 1 of 4 · The procedure', short:'Fusion vs decompression', doc:'lop',
+   q:'How does a fusion change your early approach compared with a microdiscectomy?',
+   opts:[
+    {t:'Mobility progresses more cautiously, because bone healing and the bending, lifting, and twisting restrictions have to be respected', short:'More cautious; respect bone healing', r:'strong', next:'l2', fb:'Fusion joins vertebrae with hardware and bone graft, so early rehab respects bone healing and the post-op restrictions, and mobility progresses more cautiously than after decompression procedures.', src:LUM},
+    {t:'It does not; both are spine surgeries with the same plan', short:'Same plan', r:'detour', next:'l1d', fb:'The goals of the two procedures differ. Take the detour.'}]},
+  l1d:{detour:true, label:'Decompress or stabilize',
+   q:'What is the surgical goal of each?',
+   opts:[
+    {t:'Microdiscectomy decompresses a nerve root; fusion stabilizes one or more segments', r:'strong', next:'l2', fb:'Right. A stabilized segment has to fuse, so bone healing sets the pace. Back to the main path.', src:LUM},
+    {t:'Both remove disc material', r:'detour', retry:true, fb:'Microdiscectomy removes herniated disc material. Fusion joins vertebrae together.'}]},
+  l2:{label:'Decision 2 of 4 · Week 4', short:'Early program', doc:'lop',
+   q:'What anchors her early program?',
+   opts:[
+    {t:'Walking early and often, log-roll bed mobility, ADL strategies that avoid bending, lifting, and twisting, and the 10 lb lifting limit', short:'Walking and restriction-safe ADLs', r:'strong', next:'l3', fb:'Early rehab respects tissue healing and the restrictions while managing pain and encouraging gentle mobility. Walking early and often can aid recovery and symptom management.', src:LUM},
+    {t:'Repeated lumbar flexion exercises to restore motion', short:'Lumbar flexion ROM', r:'detour', next:'l2d', fb:'Look at her orders. Take the detour.'},
+    {t:'Rest until the 3-month imaging', short:'Rest until imaging', r:'partly', next:'l3', fb:'Protective, but walking early and often is part of recovery. Rest is not the plan.'}]},
+  l2d:{detour:true, label:'The orders',
+   q:'Which order do repeated lumbar flexion exercises break?',
+   opts:[
+    {t:'Avoid bending, lifting, and twisting', r:'strong', next:'l3', fb:'Right. After fusion, lumbar ROM will be limited anyway; the plan trains movement strategies above and below the fused segment instead. Back to the main path.', src:LUM},
+    {t:'The lifting limit', r:'detour', retry:true, fb:'Close, but repeated flexion is bending, not lifting.'}]},
+  l3:{label:'Decision 3 of 4 · Week 7', short:'Red flag',
+   scene:'Week 7. Marisol reports numbness "in the seat area" since yesterday and trouble starting her urine stream. Her left ankle dorsiflexion, 5/5 last week, is 4/5 today.',
+   q:'What do you do?',
+   opts:[
+    {t:'Continue her walking program and recheck strength next visit', short:'Recheck next visit', r:'detour', next:'l3d', fb:'Look at the whole pattern. Take the detour.'},
+    {t:'Stop, and arrange immediate medical referral; notify the surgeon', short:'Immediate referral', r:'strong', next:'l4', fb:'Changes in bladder control, saddle anesthesia, and new lower-extremity neurologic deficits are the cauda equina pattern, a red flag after lumbar surgery. This is the same emergency you met in Module 5.', src:LUM+'; Module 5, cauda equina syndrome'},
+    {t:'Message the surgeon\'s office to review at the next follow-up', short:'Message for follow-up', r:'detour', next:'l3d', fb:'Right people, wrong speed. Take the detour.'}]},
+  l3d:{detour:true, label:'The pattern',
+   q:'What do saddle numbness, new urinary hesitancy, and new weakness add up to?',
+   opts:[
+    {t:'Possible cauda equina syndrome, which needs immediate referral', r:'strong', next:'l4', fb:'Right. Back to the main path. (For the rest of the case, assume emergency imaging found a treatable cause and she recovered fully.)', src:LUM},
+    {t:'Expected post-operative nerve irritation', r:'detour', retry:true, fb:'Unexpected neurologic change is itself a red flag. Bladder and saddle symptoms make it urgent.'}]},
+  l4:{label:'Decision 4 of 4 · Month 4', short:'Fear of bending',
+   scene:'Month 4. Imaging shows the fusion progressing. Marisol is cleared to progress, but she will not bend to load her dishwasher. "I keep thinking I\'ll break the screws." She wants to return to her classroom, where she sits on low chairs and lifts children.',
+   q:'What goes in her plan?',
+   opts:[
+    {t:'Aggressive lumbar flexion mobilization to restore her range', short:'Mobilize lumbar flexion', r:'detour', next:'l4d', fb:'The fused segment will not move the way it used to. Take the detour.'},
+    {t:'Address the fear directly; train functional movement using her hips and thoracic spine; progress core and whole-body strengthening gradually within fusion timelines; tell her recovery is often nonlinear; consider referral for CBT if fear persists', short:'Address fear; hips and thoracic; gradual', r:'strong', next:'END', fb:'Lumbar ROM will be limited after fusion, so the plan builds functional movement strategies above and below it. Psychological factors such as kinesiophobia and fear of reinjury should be addressed directly, and a CBT referral may be considered.', src:LUM},
+    {t:'Reassure her that she is fine and move on', short:'Reassure only', r:'partly', next:'END', fb:'Reassurance is part of it, but fear that shapes behavior needs to be addressed directly, with movement she can trust.'}]},
+  l4d:{detour:true, label:'After a fusion',
+   q:'Where does functional motion come from after an L4-L5 fusion?',
+   opts:[
+    {t:'Movement strategies that use the hips and thoracic spine', r:'strong', next:'END', fb:'Right. Train above and below the fused segment. Back to the main path.', src:LUM},
+    {t:'The fused segment, once mobilized', r:'detour', retry:true, fb:'The goal of fusion is to restrict motion at that segment.'}]}
+ }}
+]};
+
+// ---- Item-writing revision ----
+var K2='Post-Surgical Knee recording (Lentini): ACL-R and meniscal procedures';
+var F2='Foot and Ankle Postoperative recording: Achilles repair (Kisner & Borstad, Ch. 22; AAOS CPG)';
+var L2='Post-Surgical Lumbar recording (Lentini): restrictions, red flags, phased rehabilitation';
+window.OPTS = {
+ k1:['Arthroscopic approach','Patellar tendon autograft','Medial meniscus repair',
+   {t:'Postoperative brace', short:'Brace', r:'detour', retry:true, fb:'The brace is part of protecting the graft, but it does not add restrictions beyond an isolated ACL reconstruction. Try another answer.', src:K2}],
+ k1d:['Limits on weight-bearing and loaded deep flexion','Nothing; the ACL protocol already covers it',
+   {t:'Its need for earlier, more aggressive flexion', r:'detour', retry:true, fb:'The opposite: flexion is restored cautiously to protect the repair.', src:K2}],
+ k2:['Full knee extension and quad activation','Aggressive flexion ROM to prevent stiffness','Closed-chain squats to 90 degrees for strength'],
+ k2d:['Loaded deep flexion stresses the healing meniscus','Flexion matters little after an ACL reconstruction',
+   {t:'Deep flexion overstretches the new graft', r:'detour', retry:true, fb:'The concern here is the meniscus repair: deep flexion, especially loaded, increases stress on it.', src:K2}],
+ k3:['Yes, since she has reached 12 weeks with full ROM','Not yet; strengthen her quad and retest before running','Not until 9 months, when sport clearance is considered',
+   {t:'Yes, on a treadmill only, to limit the impact', short:'Treadmill running now', r:'detour', next:'k3d', fb:'The surface changes the impact, not her readiness. Take the detour.'}],
+ k3d:['Her quad strength is not yet restored','Little, since ROM is the running criterion',
+   {t:'Her effusion is too large to begin running', r:'detour', retry:true, fb:'She has only a trace effusion. The finding holding her back is quad strength.', src:K2}],
+ k4:['Clearance now, since her hop tests are symmetrical','A full testing battery and a shared decision','A 12-month wait, regardless of her testing results',
+   {t:'Clearance now, with a brace for cutting drills', short:'Clear with a brace', r:'detour', next:'k4d', fb:'A brace does not address what the hop tests missed. Take the detour.'}],
+ k4d:['Psychological readiness to return','Nothing that affects the decision',
+   {t:'Hamstring flexibility', r:'detour', retry:true, fb:'Not in her picture. She told you she is afraid to cut.'}],
+ a1:['Keep going; stretching is part of this phase','Stop it; stay within 10 degrees past neutral','Stop all dorsiflexion stretching until 12 weeks',
+   {t:'Keep going, but limit it to once a day', short:'Once a day', r:'detour', next:'a1d', fb:'Frequency is not the problem. Take the detour.'}],
+ a1d:['Within 10 degrees past neutral until 8 weeks','As far as is comfortable for him each day',
+   {t:'Neutral only, and only after 12 weeks', r:'detour', retry:true, fb:'More restrictive than the protocol. Up to 10 degrees beyond neutral is allowed until 8 weeks.', src:F2}],
+ a2:['Reduce his exercise load and recheck next visit','Stop rehabilitation and refer him to his surgeon',
+   {t:'Continue, adding ice and compression for swelling', short:'Ice and compression', r:'detour', next:'a2d', fb:'Swelling is not the finding that matters here. Take the detour.'}],
+ a2d:['Possible loss of tendon continuity','Expected stiffness at this stage',
+   {t:'Calf muscle guarding after the fall', r:'detour', retry:true, fb:'Guarding does not remove plantarflexion on calf compression. Loss of tendon continuity can.', src:F2}],
+ a3:['Box jumps and hopping now','Unilateral heel raises now','Bilateral heel raises until 16 weeks',
+   {t:'Eccentric heel drops off a step now', short:'Eccentric heel drops', r:'detour', retry:true, fb:'Eccentric heel lowering comes in the 12 to 16+ week phase, after unilateral heel raises. Try another answer.', src:F2}],
+ a3d:['After unilateral heel raises, in return to function','As soon as bilateral heel raises are pain-free',
+   {t:'Once he can jog without a limp', r:'detour', retry:true, fb:'Plyometrics follow unilateral heel raises, in the return-to-function phase. Jogging comes in the same phase, not before it.', src:F2}],
+ a4:['Yes, since his hop testing is above 90%','Not yet, since his heel rise height is 78%',
+   {t:'Yes, since he is past the 4-month mark', short:'Yes: past 4 months', r:'detour', next:'a4d', fb:'Time is a floor, not a ceiling. Take the detour.'},
+   {t:'Not yet, since he has not reached 9 months', short:'Not until 9 months', r:'detour', retry:true, fb:'The return-to-sport process typically begins at 4 to 6 months, and the criteria, not the calendar, decide it. Which criterion is he missing? Try another answer.', src:F2}],
+ a4d:['Single-leg heel rise height symmetry','None; hop LSI is the criterion',
+   {t:'Pain-free walking and running', r:'detour', retry:true, fb:'He already has pain-free walking and running.'}],
+ l1:['Progress mobility more cautiously, respecting bone healing','Progress mobility the same way as after decompression',
+   {t:'Progress mobility faster, since the segment is now stable', short:'Faster, since stable', r:'detour', next:'l1d', fb:'The segment is being stabilized, and bone healing sets the pace. Take the detour.'}],
+ l1d:['Decompression frees a nerve; fusion stabilizes a segment','Both procedures remove herniated disc to decompress nerves',
+   {t:'Both procedures fuse and stabilize a segment', r:'detour', retry:true, fb:'Only fusion stabilizes. Microdiscectomy decompresses a nerve root.', src:L2}],
+ l2:['Daily walking and restriction-safe ADL strategies','Repeated lumbar flexion to restore motion','Rest until her 3-month imaging',
+   {t:'Core bracing with light lifting practice at 20 lb', short:'Lifting practice at 20 lb', r:'detour', retry:true, fb:'Her lifting limit is 10 lb. Early rehab respects the restrictions. Try another answer.', src:L2}],
+ l2d:['Avoid bending, lifting, and twisting','Her 10 lb lifting limit',
+   {t:'Log-roll for bed mobility', r:'detour', retry:true, fb:'Log-rolling is about getting in and out of bed. Repeated flexion is bending.'}],
+ l3:['Continue walking and recheck her strength next visit','Stop, and arrange immediate medical referral','Message her surgeon to review at the next follow-up'],
+ l3d:['Possible cauda equina syndrome','Expected post-operative nerve irritation',
+   {t:'Early loosening of her pedicle screws', r:'detour', retry:true, fb:'Hardware problems do not explain saddle numbness and urinary hesitancy.'}],
+ l4:['Lumbar flexion mobilization to restore her range','Address the fear; train hip and thoracic strategies','Reassure her that the hardware is secure',
+   {t:'Avoid bending until the fusion is confirmed solid', short:'Avoid bending', r:'detour', retry:true, fb:'She is cleared to progress. Avoidance feeds the fear; movement strategies she can trust address it. Try another answer.', src:L2}],
+ l4d:['The hips and thoracic spine','The fused segment, once mobilized',
+   {t:'The lumbar segments above the fusion', r:'detour', retry:true, fb:'The plan builds movement strategies using the hips and thoracic spine, not more lumbar motion.', src:L2}],
+};
+
+(function(){ if(!window.OPTS) return;
+  for(const c of window.CASE.cases){ for(const [id,n] of Object.entries(c.nodes)){ const o=window.OPTS[id]; if(!o) continue;
+    if(o.filter(x=>typeof x==='string').length > n.opts.length) throw new Error('option count mismatch at '+id);
+    n.opts = o.map((x,i)=> typeof x==='string' ? Object.assign({}, n.opts[i], {t:x}) : x); } }
+})();
+
+// ---- Exercise-specific decisions (2 per case), added after the item-writing revision ----
+(function(){
+var CPG='Knee Ligament Sprain CPG (Logerstedt et al., 2017); Meniscal and Articular Cartilage CPG (Logerstedt et al., 2018)';
+var SAK='Post-Surgical Lumbar recording (Lentini); Sakaguchi et al., 2024';
+var C={}; window.CASE.cases.forEach(c=>C[c.id]=c);
+var K=C.kayla.nodes, A=C.andre.nodes, L=C.marisol.nodes;
+var rewire=(nodes, from, to)=>{ Object.values(nodes).forEach(n=>n.opts.forEach(o=>{ if(o.next===from) o.next=to; })); };
+// ---------- Kayla ----------
+K.k2b={label:'Decision 3 of 6 · Week 5', short:'Activation and strengthening',
+ scene:'Week 5. Kayla has used NMES and quad sets since the first week. Full extension is back, but a small quad lag remains. Her meniscus protocol still limits loaded deep flexion.',
+ q:'What does her quad program look like now?',
+ opts:[
+  {t:'Continue NMES and activation work, and begin progressive strengthening', short:'Activation plus strengthening', r:'strong', next:'k3',
+   fb:'Two things run in parallel. The lag tells you activation is still incomplete, so NMES and quad activation work continue: the knee ligament CPG supports NMES for 6 to 8 weeks, alongside neuromuscular re-education. Separately, the CPG supports beginning weight-bearing and non-weight-bearing concentric and eccentric strengthening around 4 to 6 weeks. Strengthening does not replace the activation work, and it does not wait for the lag to resolve. Keep loaded work out of deep flexion for the meniscus repair.', src:CPG+'; Post-Surgical Knee recording (Lentini)'},
+  {t:'Hold progressive strengthening until the quad lag fully resolves', short:'Wait for the lag to resolve', r:'partly', next:'k3',
+   fb:'Keeping the activation work is right. But the lag is an activation problem, and strengthening has its own timeline: the CPG begins it around 4 to 6 weeks. The two run in parallel, so holding strengthening back only delays it.', src:CPG},
+  {t:'Stop NMES and move her to progressive strengthening', short:'Replace NMES with strengthening', r:'partly', next:'k3',
+   fb:'Starting strengthening is right. Dropping NMES is not: the lag says activation is still incomplete, and the CPG supports NMES for 6 to 8 weeks to augment strengthening.', src:CPG},
+  {t:'Closed-chain strengthening only, to protect the graft from shear', short:'Closed chain only', r:'partly', next:'k3',
+   fb:'A common belief, but the knee ligament CPG supports both weight-bearing and non-weight-bearing strengthening after ACL reconstruction. And whatever the strengthening, the activation work for the lag continues.', src:CPG},
+  {t:'Loaded squats and lunges through her full flexion range', r:'detour', retry:true,
+   fb:'Loaded deep flexion stresses the meniscus repair, and her protocol still limits it. Try another answer.', src:'Post-Surgical Knee recording (Lentini)'}]};
+rewire(K,'k3','k2b'); K.k2b.opts[0].next='k3';
+K.k3b={label:'Decision 5 of 6 · Month 4', short:'Mid-phase program',
+ scene:'Month 4. On retesting, her quad strength has come far enough that you and her surgeon started her interval running program.',
+ q:'What else belongs in her mid phase?',
+ opts:[
+  {t:'A plyometric progression, dynamic balance, and continued strengthening', short:'Plyometrics, balance, strengthening', r:'strong', next:'k4',
+   fb:'The mid phase (3 to 6 months) progresses strengthening, especially the quad, both isolated and global; adds dynamic balance and neuromuscular control; begins a plyometric progression alongside the interval running program; and objectively retests quad, hamstring, and glute strength.', src:'Post-Surgical Knee recording (Lentini)'},
+  {t:'Multi-directional agility and sport-specific drills', r:'detour', retry:true, fb:'Those belong in the late phase (6 to 12+ months), after power work and linear sprinting. Try another answer.', src:'Post-Surgical Knee recording (Lentini)'},
+  {t:'Lighter strengthening, since running now builds her quad', short:'Lighter strengthening', r:'partly', next:'k4',
+   fb:'Running does not replace quad strengthening. The mid phase keeps progressing it, and keeps testing it objectively.', src:'Post-Surgical Knee recording (Lentini)'},
+  {t:'Only isolated knee extension machine work', r:'detour', retry:true, fb:'Isolated work is part of it, but the mid phase pairs isolated and global strength with balance and plyometrics. Try another answer.'}]};
+rewire(K,'k4','k3b'); K.k3b.opts.forEach(o=>{ if(o.next==='k3b') o.next='k4'; });
+// ---------- Andre ----------
+A.a0={label:'Decision 1 of 6 · Week 3', short:'Maximum protection program', doc:'aop',
+ scene:'Week 3. Andre is in the CAM boot with dorsiflexion limited to -20 degrees, weight-bearing as tolerated in the boot.',
+ q:'Which program fits the maximum protection phase?',
+ opts:[
+  {t:'Muscle-setting of the ankle and calf, plus toe ROM', short:'Muscle-setting and toe ROM', r:'strong', next:'a1',
+   fb:'Maximum protection (2 to 6 weeks): muscle-setting of the dorsiflexors, invertors, and evertors, with the gastrocnemius added after 2 weeks; active dorsiflexion no further than 0 degrees for the first 4 weeks; inversion and eversion performed in plantarflexion; toe ROM. Protect the repair above all else.', src:F2},
+  {t:'Active dorsiflexion past neutral to prevent stiffness', r:'detour', retry:true, fb:'Active dorsiflexion stays at or below 0 degrees for the first 4 weeks to protect the repair. Try another answer.', src:F2},
+  {t:'Seated heel raises to begin calf strengthening', r:'detour', retry:true, fb:'Seated heel raises start in moderate protection, from about 4 weeks. Muscle-setting comes first. Try another answer.', src:F2},
+  {t:'A gentle standing calf stretch out of the boot', r:'detour', retry:true, fb:'Dorsiflexion stretching begins in moderate protection and stays within 10 degrees past neutral until 8 weeks. At week 3, protect the repair. Try another answer.', src:F2}]};
+C.andre.start='a0';
+A.a3b={label:'Decision 5 of 6 · Week 14', short:'Return-to-function program',
+ scene:'Week 14. Andre performs unilateral heel raises well and walks on the treadmill without symptoms.',
+ q:'What enters his program now?',
+ opts:[
+  {t:'Eccentric heel lowering, plyometrics, and a jog-to-run progression', short:'Eccentrics, plyometrics, jog-to-run', r:'strong', next:'a4',
+   fb:'Minimum protection and return to function (12 to 16+ weeks): eccentric heel lowering, plyometrics, and a treadmill progression from jogging to running to agility. Gradual eccentric loading is central to tendon remodeling. Educate him that warm-up and progressive loading reduce rerupture risk.', src:F2},
+  {t:'Sprint intervals and box jumps to rebuild his power', r:'detour', retry:true, fb:'Power work is coming, but plyometrics are progressed, and running starts as a jog-to-run progression before sprinting. Eccentric heel lowering comes first. Try another answer.', src:F2},
+  {t:'Bilateral heel raises only, to keep protecting the repair', short:'Bilateral heel raises only', r:'partly', next:'a4',
+   fb:'He has earned more. Unilateral work is established, so loading now progresses to eccentrics and plyometrics.', src:F2},
+  {t:'Agility drills first, then jogging once agility is solid', r:'detour', retry:true, fb:'The progression runs the other way: jog, then run, then agility. Try another answer.', src:F2}]};
+rewire(A,'a4','a3b'); A.a3b.opts.forEach(o=>{ if(o.next==='a3b') o.next='a4'; });
+// ---------- Marisol ----------
+L.l2b={label:'Decision 3 of 6 · Week 6', short:'Core program',
+ scene:'Week 6. Marisol walks daily and is ready to start a core program. Her restrictions still include no bending, lifting, or twisting.',
+ q:'Which exercises start her core program?',
+ opts:[
+  {t:'Draw-in, bird dog, and clamshells in neutral spine', short:'Neutral spine control exercises', r:'strong', next:'l3',
+   fb:'These are the functional neutral spine control exercises in the lumbar recording (Sakaguchi et al., 2024): draw-in, bird dog, clamshell, bilateral shoulder flexion and extension, and hip abduction. Each trains the trunk and hips while the lumbar spine stays neutral, which respects the fusion and her restrictions.', src:SAK},
+  {t:'Sit-ups and crunches to build her abdominal strength', r:'detour', retry:true, fb:'Repeated trunk flexion is bending, which her restrictions still prohibit. Try another answer.', src:L2},
+  {t:'Seated trunk rotation stretches to restore her mobility', r:'detour', retry:true, fb:'Rotation is twisting, which her restrictions still prohibit. Try another answer.', src:L2},
+  {t:'Light kettlebell deadlifts to train the hip hinge', r:'detour', retry:true, fb:'The hinge pattern matters later, but a loaded deadlift at week 6 adds lifting and bending under load, which her restrictions still prohibit. Try another answer.', src:L2}]};
+rewire(L,'l3','l2b'); L.l2b.opts[0].next='l3';
+L.l5={label:'Decision 6 of 6 · Month 5', short:'Mid-late program',
+ scene:'Month 5. Imaging shows the fusion progressing, her surgeon has eased her restrictions, and she is more confident bending.',
+ q:'What does her mid-late program emphasize?',
+ opts:[
+  {t:'Progressive core and full-body strengthening, with hip hinge practice', short:'Core, full-body, hip hinge', r:'strong', next:'END',
+   fb:'The mid-late phase after fusion progresses core strengthening gradually while respecting fusion healing timelines, builds full-body strength and endurance, and supports return to meaningful activity. Lumbar ROM will be limited, so functional movement comes from above and below the fused segment: the thoracic spine and hips, as in hinging at the hips to lift. Recovery is often nonlinear.', src:L2},
+  {t:'End-range lumbar flexion and extension to restore range', r:'detour', retry:true, fb:'The fused segment is meant to restrict motion. Her function comes from the hips and thoracic spine. Try another answer.', src:L2},
+  {t:'Core work only, while avoiding all lower-body loading', r:'detour', retry:true, fb:'The mid-late phase is full-body strengthening, and the hips are where her functional motion comes from. Try another answer.', src:L2},
+  {t:'Walking only, since she is doing well without exercise', short:'Walking only', r:'partly', next:'END',
+   fb:'Walking stays, but the mid-late phase adds progressive strengthening and endurance to return her to meaningful activity.', src:L2}]};
+['l4','l4d'].forEach(id=>L[id].opts.forEach(o=>{ if(o.next==='END') o.next='l5'; }));
+// ---------- relabel existing main decisions ----------
+var lab={k1:'Decision 1 of 6 · The report',k2:'Decision 2 of 6 · Early phase',k3:'Decision 4 of 6 · The protocol says run',k4:'Decision 6 of 6 · Return to sport',
+         a1:'Decision 2 of 6 · Week 5',a2:'Decision 3 of 6 · Week 9',a3:'Decision 4 of 6 · Week 11',a4:'Decision 6 of 6 · Month 5',
+         l1:'Decision 1 of 6 · The procedure',l2:'Decision 2 of 6 · Week 4',l3:'Decision 4 of 6 · Week 7',l4:'Decision 5 of 6 · Month 4'};
+Object.entries(lab).forEach(([id,l])=>{ var n=K[id]||A[id]||L[id]; if(n) n.label=l; });
+})();
+
+// ---- Challenge revision: near-miss distractors that require discrimination ----
+(function(){
+var KN='Post-Surgical Knee recording (Lentini)';
+var CPG='Knee Ligament Sprain CPG (Logerstedt et al., 2017); Meniscal and Articular Cartilage CPG (Logerstedt et al., 2018)';
+var FA='Foot and Ankle Postoperative recording (Kisner & Borstad, Ch. 22; AAOS CPG)';
+var LU='Post-Surgical Lumbar recording (Lentini)';
+var SAK='Post-Surgical Lumbar recording (Lentini); Sakaguchi et al., 2024';
+var C={}; window.CASE.cases.forEach(c=>C[c.id]=c);
+var K=C.kayla.nodes, A=C.andre.nodes, L=C.marisol.nodes;
+var S=(t,short,next,fb,src)=>({t,short,r:'strong',next,fb,src});
+var P=(t,short,next,fb,src)=>({t,short,r:'partly',next,fb,src});
+var D=(t,short,next,fb,src)=>({t,short,r:'detour',next,fb,src});
+var R=(t,fb,src)=>({t,r:'detour',retry:true,fb:fb+' Try another answer.',src});
+
+// ======================= KAYLA =======================
+K.k1.scene='Compare Kayla\u2019s report and protocol with an isolated ACL reconstruction. Open the report if you need it.';
+K.k1.opts=[
+ S('The medial meniscus repair','Meniscus repair','k2','The repair adds its own weight-bearing and flexion restrictions, because deep flexion, especially loaded, increases stress on the healing meniscus. Restrictions are tear-dependent and surgeon-dependent.',KN),
+ P('The postoperative brace order','Brace order','k2','Close. The brace is how the restriction is carried out, but it exists because of the repair. When you see a brace order, ask what it is protecting.',KN),
+ P('The patellar tendon autograft','Graft type','k2','Graft type matters, and the recording says to consider it. But it does not add the weight-bearing and flexion limits that make her early phase different. The repair does.',KN),
+ R('The 12-week running milestone','That line shapes her mid phase, not her early restrictions.',KN)];
+
+K.k2.scene='Week 2. Kayla lacks 5 degrees of knee extension and has a visible quad lag. Flexion is 80 degrees. She has a moderate effusion.';
+K.k2.opts=[
+ S('Full extension and quad activation, worked together','Extension and quad activation','k2b','Extension ROM and quad activation go together; full extension and good quad control early set the patient up for success. NMES supports quad activation from the start. Managing pain and effusion runs alongside.',KN+'; '+CPG),
+ P('Effusion control first, then extension and quad work','Effusion first','k2b','Effusion management is an early goal, but it runs alongside the priorities, not before them. Extension and quad activation cannot wait for the swelling to settle.',KN),
+ P('Prone hangs for extension; quad work once extension is full','Extension, then quad','k2b','Extension is right, but the recording pairs it with quad activation: they go together. Deferring the quad lets the lag settle in.',KN),
+ D('Progressive flexion stretching toward 120 degrees','Push flexion','k2d','Flexion matters, but the repair changes how you get it. Take the detour.')];
+
+K.k3.opts=[
+ D('Yes; she has full ROM, no pain, and trace effusion','Yes: ROM, pain, effusion','k3d','Those are necessary, but they are not the running criterion. Take the detour.'),
+ S('Not yet; build quad strength and retest before running','Strengthen and retest','k3b','Return to running should be based on restoration of quad strength; not everyone is ready at 12 weeks. Objective testing (isokinetic or handheld dynamometry) tells you when. Tell her surgeon which finding is holding her.',KN),
+ P('Not until her quad reaches her return-to-sport threshold','Wait for the RTS threshold','k3b','Right criterion, wrong bar. Quad strength decides running, but running comes well before return to sport; waiting for a sport-level threshold delays the interval running program the mid phase includes.',KN),
+ D('Yes, on a treadmill at low speed to limit impact','Treadmill running now','k3d','The surface and speed change the load, not her readiness. Take the detour.')];
+
+K.k3b.opts=[
+ S('Plyometric progression, dynamic balance, and continued strengthening','Plyometrics, balance, strengthening','k4','The mid phase (3 to 6 months) progresses quad strengthening, isolated and global; adds dynamic balance and neuromuscular control; and begins a plyometric progression alongside interval running, with objective retesting of quads, hamstrings, and glutes.',KN),
+ P('Keep strengthening and running; start plyometrics after 6 months','Plyometrics after 6 months','k4','The plyometric progression begins in the mid phase, alongside running. Holding it to 6 months leaves the late phase with too much to build.',KN),
+ R('Add deceleration and change-of-direction drills to her running','Deceleration and multi-directional agility belong in the late phase, 6 to 12+ months, after power and linear sprinting.',KN),
+ P('Lighter strengthening, since running now loads her quad','Lighter strengthening','k4','Running does not replace quad strengthening. The mid phase keeps progressing it and keeps testing it objectively.',KN)];
+
+K.k4.scene='Month 8. Kayla has no pain, no effusion, full symmetrical ROM, quad strength and hop tests at 92% or better, and her surgeon\u2019s minimum is 9 months. On a psychological readiness scale she scores low, and she admits she is afraid to cut.';
+K.k4.opts=[
+ D('Clear her; her strength and hop testing meet the criteria','Clear on testing','k4d','Her physical numbers are there. Something else is not. Take the detour.'),
+ S('Graded exposure to sport, address her fear, then retest','Graded exposure, fear, retest','END','Psychological readiness is part of the return-to-sport battery, and her fear is a finding. Graduated exposure to sport builds confidence, her surgeon\u2019s minimum time still applies, and clearance is a shared decision between Kayla, her surgeon, and you. Time alone does not decide it, and neither do numbers alone.',KN),
+ P('Refer her for sport psychology and clear her physically now','Refer and clear','END','Addressing her fear is right, and help may include referral. But clearing her now skips graduated exposure and her surgeon\u2019s minimum time. Fear is part of readiness, not a separate track.',KN),
+ P('Hold all sport activity until 12 months, then reassess','Hold to 12 months','END','Surgeons often set a minimum time, but time alone should not determine readiness. Waiting without graduated exposure does nothing for her fear of cutting.',KN)];
+
+// ======================= ANDRE =======================
+A.a0.opts=[
+ S('Muscle-setting, including the gastrocnemius, plus toe ROM','Setting incl. gastroc, toe ROM','a1','At week 3: muscle-setting of the dorsiflexors, invertors, and evertors, with the gastrocnemius added after 2 weeks; active dorsiflexion no further than 0 degrees for the first 4 weeks; inversion and eversion performed in plantarflexion; toe ROM.',FA),
+ P('Muscle-setting of the dorsiflexors, invertors, and evertors only','Setting without gastroc','a1','Close, but out of date by a week. Gastrocnemius setting is added after 2 weeks, and he is at week 3.',FA),
+ R('Active inversion and eversion with the ankle at neutral','Inversion and eversion are done in plantarflexion in this phase, which keeps tension off the repair.',FA),
+ R('Seated heel raises with light load in the boot','Seated heel raises begin in moderate protection, from about 4 weeks. Muscle-setting comes first.',FA)];
+
+A.a1.opts=[
+ D('Keep going; stretching belongs in this phase','Keep stretching','a1d','Stretching does belong in this phase, with a limit. Take the detour.'),
+ S('Stop it; stretch no further than 10 degrees past neutral','Stop; 10 degrees past neutral','a2','Dorsiflexion stretching is limited to no more than 10 degrees beyond neutral until 8 weeks. An unlimited standing stretch loads the healing repair past that limit.',FA),
+ P('Switch to a seated towel stretch, as far as comfortable','Towel stretch, as tolerated','a2','A gentler position, but the problem is the range, not the position. "As far as comfortable" can still exceed 10 degrees past neutral.',FA),
+ P('Stop all dorsiflexion stretching until 8 weeks','No stretching until 8 weeks','a2','More restrictive than his protocol. Controlled stretching up to 10 degrees past neutral is allowed now; the limit lifts at 8 weeks.',FA)];
+
+A.a2.opts=[
+ D('Hold loading for a week, then recheck the Thompson test','Hold and recheck','a2d','Look at what the test already told you. Take the detour.'),
+ S('Stop rehabilitation and refer him to his surgeon now','Stop and refer','a3','An abnormal Thompson squeeze test after repair warrants surgical review. Rerupture occurs in about 3% and is managed with revision repair or graft reconstruction.',FA),
+ P('Check resting tension and palpate for a gap, then decide','Gather more findings first','a3','Those findings add information: all three together confirm a complete tear. But after a repair, an abnormal Thompson test already warrants surgical review. Do not let the extra testing delay the referral.',FA),
+ D('Continue non-weight-bearing work until his next follow-up','Continue until follow-up','a2d','Continuing rehabilitation on a possibly ruptured repair is the risk. Take the detour.')];
+
+A.a3.opts=[
+ D('Low-level double-leg hops to start plyometrics','Start plyometrics','a3d','Plyometrics are coming, but not yet. Take the detour.'),
+ S('Unilateral heel raises now','Unilateral heel raises','a3b','Unilateral heel raises belong at 10 to 12 weeks. Eccentric heel lowering, plyometrics, and the jog-to-run progression follow in the 12 to 16+ week phase.',FA),
+ P('Bilateral heel raises with added load until 16 weeks','Loaded bilateral until 16 weeks','a3b','Loading bilateral work is reasonable, but it holds him back from the unilateral heel raises his phase allows now.',FA),
+ R('Eccentric heel drops off a step now','Eccentric heel lowering comes in the 12 to 16+ week phase, after unilateral heel raises. It is close, but it is next, not now.',FA)];
+
+A.a4.scene='Month 5. Andre wants to rejoin his Sunday basketball league next week. He walks and runs without pain. Hop testing: 92% of his left side. Single-leg heel rise height: 78% of his left side.';
+A.a4.q='What do you tell him?';
+A.a4.opts=[
+ D('Yes; hop testing is 92% and his running is pain-free','Yes: hop and running','a4d','Two of three criteria are met. The third is the one that matters most. Take the detour.'),
+ S('Not yet; build heel rise height, then retest before sport','Not yet: build heel rise, retest','END','His heel rise height is 78% of the other side, and heel rise height is the most sensitive clinical measure of Achilles recovery. Symmetry is required before clearance, and a deficit this size says the calf and tendon are not ready for sport-type loading, graded or not. Keep progressing his calf loading and retest. The return-to-sport process can begin at 4 to 6 months, but the window is a floor, not a start signal; full unrestricted sport typically comes at 9 to 12 months. Set expectations early: more than 30% of patients report some impairment at 1 to 5 years.',FA),
+ P('Begin a graded return-to-sport progression alongside his calf work','Graded progression plus calf work','END','The tempting middle ground, and the timing is inside the 4 to 6 month window. But a 22% heel rise height deficit says the tendon is not ready for sport-type loading, even graded. Build heel rise height first; the progression starts when it allows.',FA),
+ R('Practice now, but no games until his heel rise improves','Practice with cutting and jumping is still basketball. His heel rise height says he is not ready for sport loading of any kind yet.',FA)];
+
+// ======================= MARISOL =======================
+L.l1.opts=[
+ S('Progress mobility more cautiously, respecting bone healing','More cautious; bone healing','l2','Fusion joins vertebrae with hardware and bone graft, so early rehab respects bone healing and the post-op restrictions, and mobility progresses more cautiously than after decompression procedures.',LU),
+ D('Progress faster, since the hardware stabilizes the segment','Faster: hardware stable','l1d','The hardware holds the segment while the bone fuses. It does not replace the fusion. Take the detour.'),
+ P('Same progression, but keep her lifting limit longer','Same, longer lifting limit','l2','Restrictions do differ, but so does the mobility progression itself. After fusion, mobility is progressed more cautiously than after a decompression, not just with a longer lifting limit.',LU),
+ R('Same progression; both relieve pressure on the nerves','Microdiscectomy decompresses a nerve root; fusion stabilizes a segment. The goals differ, so the early plans differ.',LU)];
+
+L.l2.opts=[
+ S('Daily walking and restriction-safe ADL strategies','Walking and ADL strategies','l2b','Walking early and often aids recovery and symptom management. ADL coaching keeps her inside her restrictions: rising from side-lying, picking objects up from the floor with aids, and dressing with a trouser aid and long shoehorn.',SAK),
+ D('Daily walking with gentle lumbar flexion stretches','Walking and flexion stretches','l2d','The walking fits. The stretches do not. Take the detour.'),
+ P('Rest and a lumbar brace until her 3-month imaging','Rest until imaging','l2b','Protective, but walking early and often is part of recovery. Rest delays it.',LU),
+ R('Walking plus light lifting practice at 20 lb','Her lifting limit is 10 lb. Early rehab respects the restrictions.',LU)];
+
+L.l2b.opts=[
+ S('Draw-in, bird dog, and clamshells in neutral spine','Neutral spine control','l3','These are the functional neutral spine control exercises in the lumbar recording (Sakaguchi et al., 2024): draw-in, bird dog, clamshell, bilateral shoulder flexion and extension, and hip abduction. Each trains the trunk and hips while the lumbar spine stays neutral.',SAK),
+ R('Draw-in progressing to curl-ups for abdominal strength','Curl-ups are repeated trunk flexion, which is bending. The draw-in is right; the progression is not.',LU),
+ R('Supine lower-trunk rotations for gentle mobility','A common home exercise, but rotation is twisting, which her restrictions still prohibit.',LU),
+ R('Light kettlebell deadlifts to train the hip hinge','The hinge pattern matters later, but a loaded deadlift at week 6 adds lifting and bending under load, which her restrictions still prohibit.',LU)];
+
+L.l3.opts=[
+ D('Retest strength and reflexes next visit before deciding','Retest next visit','l3d','Look at the whole pattern, not just the strength. Take the detour.'),
+ S('Stop, and arrange immediate medical referral','Immediate referral','l4','Changes in bladder control, saddle anesthesia, and new lower-extremity neurologic deficits are the cauda equina pattern, a red flag after lumbar surgery. This is the same emergency you met in Module 5: it does not wait for a callback.',LU+'; Module 5, cauda equina syndrome'),
+ P('Call her surgeon\u2019s office today and let them decide','Call the office today','l4','Right people, but not fast enough for this pattern. Saddle numbness with new bladder symptoms and weakness needs immediate medical referral, with the surgeon notified.',LU),
+ D('Message her surgeon to review at the next follow-up','Message for follow-up','l3d','Right people, wrong speed. Take the detour.')];
+
+L.l4.opts=[
+ S('Address the fear; train hip and thoracic strategies','Fear plus movement strategies','l5','Kinesiophobia and fear of reinjury should be addressed directly, and a CBT referral may be considered. Lumbar ROM will be limited after fusion, so function comes from strategies using the hips and thoracic spine, practiced until she trusts them.',LU),
+ P('Reassure her that the hardware is secure','Reassurance','l5','Reassurance helps, but fear that shapes behavior needs to be addressed directly, with movement she practices until she trusts it.',LU),
+ P('Refer for CBT and pause exercise until fear improves','CBT and pause','l5','A CBT referral may be considered, but not instead of movement. Pausing exercise lets the avoidance grow; the fear is addressed with movement she can trust.',LU),
+ R('Avoid bending until the fusion is confirmed solid','She is cleared to progress. Avoidance feeds the fear; movement strategies she can trust address it.',LU)];
+
+L.l5.opts=[
+ S('Progressive core and full-body strength, with hip hinge practice','Core, full-body, hip hinge','END','The mid-late phase after fusion progresses core strengthening gradually while respecting fusion healing timelines, builds full-body strength and endurance, and supports return to meaningful activity. Functional motion comes from above and below the fused segment, as in hinging at the hips to lift.',LU),
+ P('Core strengthening, adding lumbar range work as tolerated','Core plus lumbar range','END','Core progression is right, but chasing lumbar range works against the fusion. The fused segment is meant to restrict motion; train the hips and thoracic spine instead.',LU),
+ R('Core work only, while avoiding all lower-body loading','The mid-late phase is full-body strengthening, and the hips are where her functional motion comes from.',LU),
+ P('Walking and core only, since she is doing well','Walking and core only','END','Both stay, but the mid-late phase adds progressive full-body strengthening and endurance to return her to meaningful activity.',LU)];
+
+// ---------- repair: week 5 near-miss options must continue to week 12, not loop ----------
+K.k2b.opts.forEach(o=>{ if(o.next==='k2b') o.next='k3'; });
+// ---------- guard: no option may point back to its own node ----------
+window.CASE.cases.forEach(c=>Object.entries(c.nodes).forEach(([id,n])=>n.opts.forEach(o=>{ if(o.next===id) throw new Error('self-loop at '+c.id+':'+id); })));
+
+// ---------- keep only detour nodes that something still points to ----------
+window.CASE.cases.forEach(c=>{
+  var used=new Set([c.start]); Object.values(c.nodes).forEach(n=>n.opts.forEach(o=>{ if(!o.retry) used.add(o.next); }));
+  Object.keys(c.nodes).forEach(id=>{ if(c.nodes[id].detour && !used.has(id)) delete c.nodes[id]; });
+});
+})();
+
+// ---- Return-to-running decision for Andre (week 16) ----
+(function(){
+var FA='Foot and Ankle Postoperative recording (Kisner & Borstad, Ch. 22; AAOS CPG)';
+var c=window.CASE.cases.find(x=>x.id==='andre'); var A=c.nodes;
+// week 14 now stops at eccentrics and plyometrics; jogging becomes its own decision
+A.a3b.scene='Week 14. Andre performs unilateral heel raises well and walks on the treadmill without symptoms.';
+A.a3b.opts=[
+ {t:'Eccentric heel lowering and a progressive plyometric program', short:'Eccentrics and plyometrics', r:'strong', next:'a3c',
+  fb:'Minimum protection and return to function (12 to 16+ weeks) adds eccentric heel lowering and plyometrics, progressed as the tendon tolerates. Gradual eccentric loading is central to tendon remodeling. Educate him that warm-up and progressive loading reduce rerupture risk. Running comes next, when he has earned it.', src:FA},
+ {t:'Sprint intervals and box jumps to rebuild his power', r:'detour', retry:true, fb:'Power work is coming, but plyometrics are progressed from low level, and running starts as a jog before any sprinting. Eccentric heel lowering comes first. Try another answer.', src:FA},
+ {t:'Bilateral heel raises only, to keep protecting the repair', short:'Bilateral heel raises only', r:'partly', next:'a3c',
+  fb:'He has earned more. Unilateral work is established, so loading now progresses to eccentrics and plyometrics.', src:FA},
+ {t:'A treadmill jogging program, before any eccentric work', r:'detour', retry:true, fb:'Jogging follows the loading progression, not the other way around: eccentric heel lowering and plyometrics come first. Try another answer.', src:FA}];
+A.a3c={label:'Decision 6 of 7 · Week 16', short:'Ready to jog?',
+ scene:'Week 16. Andre asks to start jogging. You decide what he has to show you first.',
+ q:'Which findings support starting his jog-to-run progression?',
+ opts:[
+  {t:'Strong unilateral heel raises, and eccentrics and hops tolerated without a flare', short:'Loading tolerated, no flare', r:'strong', next:'a4',
+   fb:'Running follows the loading progression: unilateral heel raises (10 to 12 weeks), then eccentric heel lowering and plyometrics, then the treadmill progression from jog to run to agility (12 to 16+ weeks). Progress loading as the healing tendon tolerates it: pain-free performance with no increase in pain or swelling the next day is what earns the first jog. The calendar only opens the window. Hop testing at 90% and symmetrical heel rise height are the return-to-sport bar, which comes later.', src:FA},
+  {t:'Sixteen weeks since surgery, and he walks without pain or a limp', short:'Time plus normal walking', r:'detour', next:'a3d_run',
+   fb:'Both are good signs, and neither tells you the tendon tolerates impact. Take the detour.'},
+  {t:'Single-leg hop testing at 90% of his other side', short:'Hop LSI 90%', r:'partly', next:'a4',
+   fb:'The right kind of measure, but the wrong bar. A hop LSI of 90% is part of return-to-sport clearance, which comes later. Starting a jog needs tolerance of heel raises, eccentrics, and low-level hopping, not a sport-level test.', src:FA},
+  {t:'Full dorsiflexion ROM and a normal walking pattern', short:'ROM and gait', r:'partly', next:'a4',
+   fb:'Necessary, but not enough. Running loads the tendon far more than walking; he needs to show that unilateral heel raises, eccentric lowering, and hopping are tolerated without a flare.', src:FA}]};
+A.a3d_run={detour:true, label:'Walking is not running',
+ scene:'Running loads the Achilles far more than walking. The loading progression exists to prove the tendon tolerates that before he runs.',
+ q:'Which finding best shows his tendon is ready for impact?',
+ opts:[
+  {t:'Hopping and eccentrics with no next-day pain or swelling', r:'strong', next:'a4',
+   fb:'Right. Tolerance of loading, judged by symptoms during and after, is what earns the first jog. Back to the main path.', src:FA},
+  {t:'Sixteen full weeks have passed since his surgery', r:'detour', retry:true, fb:'Time is a floor, not a ceiling.'},
+  {t:'A normal walking pattern without a limp or pain', r:'detour', retry:true, fb:'Necessary, but walking does not test impact tolerance.'}]};
+// relabel to seven decisions
+var lab={a0:'Decision 1 of 7 · Week 3',a1:'Decision 2 of 7 · Week 5',a2:'Decision 3 of 7 · Week 9',a3:'Decision 4 of 7 · Week 11',a3b:'Decision 5 of 7 · Week 14',a4:'Decision 7 of 7 · Month 5'};
+Object.entries(lab).forEach(([id,l])=>{ if(A[id]) A[id].label=l; });
+// anything that used to lead from week 14 straight to month 5 now goes through the jog decision
+Object.entries(A).forEach(([id,n])=>{ if(['a3b','a3c','a3d_run'].includes(id)) return; });
+// the week 11 detour and key still lead to week 14
+})();
+</script>
+<script></script>
+<script>(function(){
+const D = window.CASE;
+const $ = (h)=>{const t=document.createElement('template');t.innerHTML=h.trim();return t.content.firstChild;};
+const RL = {strong:'Strong choice', partly:'Partly there', detour:'Detour'};
+const app = document.getElementById('app');
+const state = {}; // per case: {flags, log, node, done}
+function S(cid){ if(!state[cid]) state[cid]={flags:{},log:[],node:null,done:false}; return state[cid]; }
+let cur = D.cases[0].id;
+
+// document modal
+const modal = $('<div class="modal"><div class="sheet"><div class="hd"><span></span><button type="button">Close</button></div><table></table></div></div>');
+document.body.appendChild(modal);
+modal.querySelector('button').onclick=()=>modal.classList.remove('on');
+modal.onclick=(e)=>{ if(e.target===modal) modal.classList.remove('on'); };
+function openDoc(id){ const d=D.docs[id]; modal.querySelector('.hd span').textContent=d.title;
+  modal.querySelector('table').innerHTML=d.rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join(''); modal.classList.add('on'); }
+
+function resolve(next, st){ if(typeof next==='string') return next; for(const c of next){ if(!c.if || st.flags[c.if]) return c.to; } }
+function caseObj(){ return D.cases.find(c=>c.id===cur); }
+
+function render(){
+  const y=window.scrollY; app.innerHTML='';
+  requestAnimationFrame(()=>window.scrollTo(0,y));
+  if (D.cases.length>1){
+    const tabs=$('<div class="tabs"></div>');
+    D.cases.forEach(c=>{ const b=$(`<button class="tab${c.id===cur?' on':''}" type="button">${c.tab}${S(c.id).done?'<span class="done">\u2713</span>':''}</button>`);
+      b.onclick=()=>{cur=c.id;render();window.scrollTo({top:app.offsetTop-10,behavior:'smooth'});}; tabs.appendChild(b); });
+    app.appendChild(tabs);
+  }
+  const c=caseObj(), st=S(c.id);
+  if(!st.node) st.node=c.start;
+  if(c.intro){ const i=$(`<div class="card"><div class="lab">${c.introLabel||'The patient'}</div><div class="scene">${c.intro}</div></div>`);
+    if(!c.roles) (c.docs||[]).forEach(d=>{const b=$(`<button class="docbtn" type="button">Open: ${D.docs[d].title}</button>`); b.onclick=()=>openDoc(d); i.appendChild(b);}); app.appendChild(i); }
+  if(c.roles && window.ROLEKIT && !st.done){ window.ROLEKIT.render(D, c, st, app, render); }
+  if(st.log.length){ const lg=$('<div class="log"></div>');
+    st.log.forEach(e=>lg.appendChild($(`<div class="item"><span class="k">${e.k}</span><span><span class="dot ${e.r}"></span>${e.t}${e.w?`<span style="display:block;color:var(--mute);font-size:13.5px;margin-top:3px">Your reasoning: ${e.w.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}</span>`:''}</span></div>`))); app.appendChild(lg); }
+  if(c.modes && !st.mode && !st.done){
+    const mc=$(`<div class="card"><div class="lab">How are you working?</div><div class="scene">${c.modes.prompt}</div><div class="roles"></div></div>`);
+    [['group','Working with a group',c.modes.group],['solo','Working on my own',c.modes.solo]].forEach(([k,label,desc])=>{
+      const b=$(`<button class="rolebtn" type="button"><b>${label}</b><span>${desc}</span></button>`); b.onclick=()=>{st.mode=k; render();}; mc.querySelector('.roles').appendChild(b); });
+    app.appendChild(mc); return;
+  }
+  if(c.modes && st.mode && !st.done){ app.appendChild($(`<div class="note"><b>${st.mode==='solo'?'Working on your own.':'Working with a group.'}</b> ${st.mode==='solo'?c.modes.soloHow:c.modes.groupHow}</div>`)); }
+  if(st.done){ app.appendChild(summary(c,st)); return; }
+  if(c.gate && !st.opened){ const g=$(`<div class="card"><div class="lab">After you play the scene</div><div class="scene">${c.gate}</div></div>`);
+    const gb=$('<button class="go" type="button">We played the scene: open the reflection</button>'); gb.onclick=()=>{st.opened=true;render();}; g.appendChild(gb); app.appendChild(g); return; }
+  app.appendChild(nodeCard(c,st,c.nodes[st.node]));
+}
+
+function nodeCard(c,st,n){
+  const card=$(`<div class="card${n.detour?' detour':''}"></div>`);
+  card.appendChild($(`<div class="lab">${n.detour?'Detour: '+(n.label||''):(n.label||'')}</div>`));
+  const scene = typeof n.scene==='function'? n.scene(st.flags) : n.scene;
+  if(scene) card.appendChild($(`<div class="scene">${scene}</div>`));
+  if(n.find){ card.appendChild($(`<table class="find">${n.find.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table>`)); }
+  if(n.doc){ const b=$(`<button class="docbtn" type="button">Open: ${D.docs[n.doc].title}</button>`); b.onclick=()=>openDoc(n.doc); card.appendChild(b); }
+  card.appendChild($(`<div class="q">${n.q}</div>`));
+  let why=null;
+  if(c.modes && st.mode==='solo'){
+    st.why = st.why || {};
+    why=$(`<div class="field"><label style="font-size:14.5px">Before you choose: why? One sentence.</label><textarea style="min-height:44px" placeholder="What in the report, protocol, or findings drives your choice?"></textarea></div>`);
+    const ta=why.querySelector('textarea'); ta.value=st.why[st.node]||''; ta.oninput=()=>{st.why[st.node]=ta.value;};
+    card.appendChild(why);
+  }
+  const box=$('<div></div>'); card.appendChild(box);
+  const fbHost=$('<div></div>'); card.appendChild(fbHost);
+  st.ord = st.ord || {};
+  if(!st.ord[st.node] || st.ord[st.node].length!==n.opts.length){ const a=n.opts.map((_,i)=>i); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} st.ord[st.node]=a; }
+  st.ord[st.node].map(i=>n.opts[i]).forEach((o,i)=>{
+    const b=$(`<button class="opt" type="button">${o.t}</button>`);
+    b.onclick=()=>{
+      if(o.retry){ b.classList.add('tried'); b.disabled=true;
+        fbHost.innerHTML=''; fbHost.appendChild($(`<div class="fb detour"><span class="chip detour">Not this one</span><div>${o.fb}</div>${o.src?`<span class="src">${o.src}</span>`:''}</div>`)); return; }
+      box.querySelectorAll('.opt').forEach(x=>x.disabled=true); b.classList.add('picked',o.r);
+      (o.set||[]).forEach(f=>st.flags[f]=true); (o.clear||[]).forEach(f=>delete st.flags[f]);
+      fbHost.innerHTML='';
+      const f=$(`<div class="fb ${o.r}"><span class="chip ${o.r}">${RL[o.r]}</span><div>${o.fb}</div>${o.src?`<span class="src">${o.src}</span>`:''}</div>`);
+      fbHost.appendChild(f);
+      const nx=resolve(o.next, st);
+      const go=$(`<button class="go" type="button">${nx==='END'?'See your path':(c.nodes[nx]&&c.nodes[nx].detour?'Take the detour':'Continue')}</button>`);
+      go.onclick=()=>{ st.log.push({k:(n.detour?'Detour':n.short||n.label), t:o.short||o.t, r:o.r, w:(st.mode==='solo' && st.why && st.why[st.node]) ? st.why[st.node].trim() : ''}); if(nx==='END'){st.done=true;} else st.node=nx; render(); window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); };
+      fbHost.appendChild(go);
+    };
+    box.appendChild(b);
+  });
+  return card;
+}
+
+function summary(c,st){
+  const cnt={strong:0,partly:0,detour:0}; st.log.forEach(e=>{ if(e.k!=='Detour') cnt[e.r]++; });
+  const s=$(`<div class="card sum"><div class="lab">Your path</div><h2>${c.endTitle||'End of the case'}</h2></div>`);
+  s.appendChild($(`<div class="tally"><div style="background:var(--tint2)"><b style="color:var(--green)">${cnt.strong}</b>strong first choices</div><div style="background:var(--tint)"><b style="color:var(--teal)">${cnt.partly}</b>partly there</div><div style="background:var(--amberT)"><b style="color:var(--amber)">${cnt.detour}</b>detours taken</div></div>`));
+  if(c.endText) s.appendChild($(`<div>${c.endText}</div>`));
+  if(c.modes && st.mode==='solo' && c.modes.soloEnd) s.appendChild($(`<div class="note">${c.modes.soloEnd}</div>`));
+  (c.endNotes||[]).forEach(nt=>{ if(!nt.if || st.flags[nt.if]) s.appendChild($(`<div class="note">${nt.text}</div>`)); });
+  if(c.think){ s.appendChild($(`<div><div class="lab" style="margin-top:14px">Worth thinking about</div><ul>${c.think.map(t=>`<li>${t}</li>`).join('')}</ul></div>`)); }
+  const r=$('<button class="go ghost" type="button">Start this case over</button>'); r.onclick=()=>{ delete state[c.id]; render(); window.scrollTo({top:0,behavior:'smooth'}); };
+  s.appendChild(r);
+  const nextCase = D.cases.find(x=>!S(x.id).done);
+  if(nextCase){ const nb=$(`<button class="go" type="button" style="margin-left:10px">Next: ${nextCase.tab}</button>`); nb.onclick=()=>{cur=nextCase.id;render();window.scrollTo({top:app.offsetTop-10,behavior:'smooth'});}; s.appendChild(nb); }
+  const pr=$('<button class="go ghost" type="button" style="margin-left:10px">Print for your own notes</button>'); pr.onclick=()=>window.print(); s.appendChild(pr);
+  return s;
+}
+render();
+})();
+</script>
+</body></html>
