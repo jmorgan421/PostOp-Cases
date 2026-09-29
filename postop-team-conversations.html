@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Four Conversations, Four Patients</title><style>:root{--navy:#012D46;--teal:#00778B;--green:#00783C;--ink:#1F2A33;--mute:#5B6770;--tint:#EAF3F5;--tint2:#EEF6F0;--amber:#9A5B00;--amberT:#FBF1E2;--line:#C9D6DC}
+*{box-sizing:border-box}
+body{margin:0;font-family:Calibri,"Segoe UI",Arial,sans-serif;color:var(--ink);background:#F4F7F8;line-height:1.45;font-size:17px}
+.wrap{max-width:860px;margin:0 auto;padding:0 18px 60px}
+header.top{background:var(--navy);color:#fff;padding:26px 0 22px}
+header.top .wrap{padding-bottom:0}
+.eyebrow{font-size:12.5px;letter-spacing:2px;text-transform:uppercase;color:#8FC7D1;font-weight:700}
+h1{margin:6px 0 4px;font-size:30px;line-height:1.15}
+.sub{color:#BFE3E8;font-size:17px}
+.howto{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:22px 0 18px}
+.howto b{color:var(--navy)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;cursor:pointer;font:inherit;font-size:15px;color:var(--navy)}
+.tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.tab .done{color:var(--green);font-weight:700;margin-left:6px}
+.tab.on .done{color:#9FE0B5}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:14px 0}
+.card.detour{border-color:#E3C79A;background:#FFFCF6}
+.lab{font-size:12.5px;letter-spacing:1.8px;text-transform:uppercase;font-weight:700;color:var(--teal);margin-bottom:6px}
+.card.detour .lab{color:var(--amber)}
+.scene{margin:0 0 12px}
+.q{font-weight:700;color:var(--navy);font-size:18.5px;margin:12px 0 10px}
+table.find{width:100%;border-collapse:collapse;margin:8px 0 6px;font-size:15.5px}
+table.find td{padding:7px 10px;border-bottom:1px solid #E3EAEE;vertical-align:top}
+table.find td:first-child{font-weight:700;color:var(--navy);width:34%}
+.opt{display:block;width:100%;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:12px 14px;margin:8px 0;font:inherit;font-size:16.5px;cursor:pointer;color:var(--ink)}
+.opt:hover:not([disabled]){border-color:var(--teal);background:#F7FBFC}
+.opt[disabled]{cursor:default;opacity:.55}
+.opt.picked{opacity:1;border-width:2px}
+.opt.picked.strong{border-color:var(--green);background:var(--tint2)}
+.opt.picked.partly{border-color:var(--teal);background:var(--tint)}
+.opt.picked.detour{border-color:var(--amber);background:var(--amberT)}
+.opt.tried{text-decoration:line-through;opacity:.5}
+.fb{border-radius:10px;padding:13px 16px;margin:12px 0 4px;font-size:16px}
+.fb.strong{background:var(--tint2);border:1px solid #BFDCC9}
+.fb.partly{background:var(--tint);border:1px solid #BBD8DE}
+.fb.detour{background:var(--amberT);border:1px solid #E3C79A}
+.chip{display:inline-block;font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;border-radius:6px;padding:2px 8px;margin-bottom:6px}
+.chip.strong{color:var(--green);border:1px solid var(--green)}
+.chip.partly{color:var(--teal);border:1px solid var(--teal)}
+.chip.detour{color:var(--amber);border:1px solid var(--amber)}
+.src{display:block;color:var(--mute);font-size:13.5px;font-style:italic;margin-top:6px}
+.go{margin-top:12px;background:var(--navy);color:#fff;border:0;border-radius:8px;padding:10px 18px;font:inherit;font-size:16px;cursor:pointer}
+.go.ghost{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
+.docbtn{background:var(--tint);color:var(--navy);border:1px solid #BBD8DE;border-radius:8px;padding:6px 12px;font:inherit;font-size:14.5px;cursor:pointer;margin:2px 0 8px}
+.log{margin:10px 0}
+.log .item{display:flex;gap:10px;align-items:baseline;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:6px 0;font-size:15px}
+.log .item .k{color:var(--mute);min-width:128px;font-size:13.5px;text-transform:uppercase;letter-spacing:1px;font-weight:700}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;flex:none;position:relative;top:1px}
+.dot.strong{background:var(--green)}.dot.partly{background:var(--teal)}.dot.detour{background:var(--amber)}
+.modal{position:fixed;inset:0;background:rgba(1,45,70,.55);display:none;align-items:flex-start;justify-content:center;padding:40px 14px;overflow:auto;z-index:9}
+.modal.on{display:flex}
+.modal .sheet{background:#fff;border-radius:12px;max-width:760px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.modal .hd{background:var(--navy);color:#fff;padding:12px 18px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center;font-weight:700;letter-spacing:1px;font-size:14px;text-transform:uppercase}
+.modal .hd button{background:none;border:1px solid #8FC7D1;color:#fff;border-radius:6px;padding:4px 10px;cursor:pointer;font:inherit;font-size:14px}
+.modal table{width:100%;border-collapse:collapse}
+.modal td{padding:9px 16px;border-bottom:1px solid #E3EAEE;vertical-align:top;font-size:15.5px}
+.modal td:first-child{font-weight:700;color:var(--navy);width:32%}
+.sum h2{color:var(--navy);margin:4px 0 8px;font-size:22px}
+.tally{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 14px}
+.tally div{flex:1;min-width:120px;border-radius:10px;padding:10px 12px;text-align:center}
+.tally b{display:block;font-size:26px}
+.note{background:var(--tint);border-radius:10px;padding:12px 16px;margin:10px 0}
+footer{color:var(--mute);font-size:14px;text-align:center;margin-top:26px}
+@media print{.opt,.go,.docbtn,.tabs{display:none}}
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:10px 0 4px}
+.rolebtn{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:12px;text-align:left;cursor:pointer;font:inherit;color:var(--navy)}
+.rolebtn b{display:block;font-size:17px}.rolebtn span{font-size:13.5px;color:var(--mute)}
+.rolebtn.on{border-color:var(--teal);background:var(--tint)}
+.warn{font-size:14px;color:var(--amber);margin:6px 0 0}
+.field{margin:12px 0}.field label{display:block;font-weight:700;color:var(--navy);font-size:15.5px}
+.field .hint{font-size:13.5px;color:var(--mute);margin:2px 0 6px}
+.field textarea{width:100%;min-height:58px;border:1.5px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit;font-size:15.5px;resize:vertical}
+.nudge{font-size:14px;border-radius:8px;padding:6px 10px;margin-top:6px}
+.nudge.ok{background:var(--tint2);color:var(--green)}.nudge.fix{background:var(--amberT);color:var(--amber)}
+.callcard{background:var(--navy);color:#fff;border-radius:12px;padding:18px 22px;margin:12px 0}
+.callcard .lab{color:#8FC7D1}.callcard ol{margin:6px 0 0 18px;padding:0}.callcard li{margin:6px 0;font-size:18px}
+.callcard li small{display:block;color:#8FC7D1;font-size:12px;letter-spacing:1px;text-transform:uppercase}
+.cue{display:block;width:100%;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:10px 12px;margin:7px 0;font:inherit;font-size:15.5px;cursor:pointer;color:var(--ink)}
+.cue:hover{border-color:var(--teal)}.cue.used{border-color:var(--teal);background:var(--tint)}
+.say{background:var(--navy);color:#fff;border-radius:10px;padding:12px 16px;margin:6px 0 10px;font-size:17px}
+.say small{display:block;color:#8FC7D1;font-size:12px;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}
+.secret{border:1.5px dashed var(--amber);background:var(--amberT);border-radius:10px;padding:10px 14px;margin:8px 0}
+.secret.open{border-style:solid;border-color:var(--green);background:var(--tint2)}
+.timer{display:flex;align-items:center;gap:12px;margin:6px 0 10px}.timer b{font-size:26px;color:var(--navy);min-width:70px}
+.chk{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:10px 12px;margin:7px 0;cursor:pointer}
+.chk .box{width:22px;height:22px;border:2px solid var(--line);border-radius:5px;flex:none;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff}
+.chk.done{border-color:var(--green);background:var(--tint2)}.chk.done .box{background:var(--green);border-color:var(--green)}
+.chk .t{flex:1}.chk .stamp{font-size:13px;color:var(--green);font-weight:700}
+.trace{list-style:none;padding:0;margin:6px 0}.trace li{padding:6px 0;border-bottom:1px solid #E3EAEE;font-size:15px}
+.trace li span{color:var(--mute);font-size:13px;margin-right:8px}
+
+.guide{background:#fff;border:1px solid var(--line);border-radius:14px;margin:0 0 18px;overflow:hidden}
+.guide summary{cursor:pointer;list-style:none;padding:14px 18px;font-weight:700;color:var(--navy);font-size:16.5px;background:var(--tint)}
+.guide summary::-webkit-details-marker{display:none}
+.guide summary::before{content:'\25BE  ';color:var(--teal)}
+.guide:not([open]) summary::before{content:'\25B8  '}
+.guide .gbody{padding:6px 18px 16px}
+.guide h3{font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:14px 0 6px}
+.guide ol,.guide ul{margin:4px 0 6px 20px;padding:0}
+.guide li{margin:5px 0;line-height:1.5}
+.guide .roles4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:8px}
+.guide .rbox{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#FAFCFC}
+.guide .rbox h4{margin:0 0 4px;font-size:15.5px;color:var(--navy)}
+.guide .rbox p{margin:4px 0;font-size:14.5px;line-height:1.45}
+.guide .key{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 4px 0 2px;vertical-align:middle}
+@media (max-width:640px){.guide .roles4{grid-template-columns:1fr}}
+
+.guide .rtwrap{overflow-x:auto;margin:6px 0}
+.guide table.rt{border-collapse:collapse;width:100%;min-width:520px;font-size:14px}
+.guide table.rt th,.guide table.rt td{border:1px solid var(--line);padding:6px 8px;text-align:center;vertical-align:middle}
+.guide table.rt tr:first-child th{background:var(--navy);color:#fff;font-size:13px}
+.guide table.rt th{background:var(--tint);color:var(--navy)}
+.guide table.rt td.pt{color:var(--green);font-weight:700}
+</style></head>
+<body>
+<header class="top"><div class="wrap"><div class="eyebrow">DPHT 7441  ·  Module 6  ·  Virtual Lab · Role-play with role-specific tools</div><h1>Four Conversations, Four Patients</h1><div class="sub">Scene 1: Dolores, knee · Scene 2: Tessa, hip · Scene 3: Darnell, lumbar spine · Scene 4: Jordan, foot and ankle</div></div></header>
+<div class="wrap">
+<div class="howto"><b>How this works.</b> Four scenes, one patient per region, played in order: Scene 1 Dolores (knee), Scene 2 Tessa (hip), Scene 3 Darnell (lumbar spine), Scene 4 Jordan (foot and ankle). Every scene is a call with the surgeon, then back to the patient. <b>Read the step-by-step guide below before you start</b>; it explains exactly what to do in your role.</div>
+<details class="guide" open><summary>How to use this activity, step by step</summary><div class="gbody"><h3>Before you start (once)</h3>
+<ol>
+<li><b>Everyone opens this page on their own device.</b></li>
+<li><b>Decide who is Person A, B, C, and D.</b> Alphabetical by first name works. Your letter tells you your role in every scene; each scene's brief lists it.</li>
+<li><b>Play the scenes in order:</b> Scene 1 Dolores, Scene 2 Tessa, Scene 3 Darnell, Scene 4 Jordan. In a group of four, everyone plays the physical therapist once. In a group of three, Person A plays the physical therapist again in Scene 4.</li>
+</ol>
+<h3>Who does what, scene by scene</h3>
+<p style="margin:4px 0 6px">Find your group size. Your letter tells you your role in every scene. "Timer" means you also keep the scene timer.</p>
+<div class="rtwrap"><table class="rt"><tr><th>Group of 4</th><th>Scene 1<br>Dolores</th><th>Scene 2<br>Tessa</th><th>Scene 3<br>Darnell</th><th>Scene 4<br>Jordan</th></tr>
+<tr><th>A</th><td class="pt">PT</td><td>Surgeon</td><td>Surgeon</td><td>Observer + timer</td></tr>
+<tr><th>B</th><td>Surgeon</td><td class="pt">PT</td><td>Patient</td><td>Surgeon</td></tr>
+<tr><th>C</th><td>Watches the call, then Dolores</td><td>Patient</td><td class="pt">PT</td><td>Patient</td></tr>
+<tr><th>D</th><td>Observer + timer</td><td>Observer + timer</td><td>Observer + timer</td><td class="pt">PT</td></tr></table></div>
+<div class="rtwrap"><table class="rt"><tr><th>Group of 3</th><th>Scene 1<br>Dolores</th><th>Scene 2<br>Tessa</th><th>Scene 3<br>Darnell</th><th>Scene 4<br>Jordan</th></tr>
+<tr><th>A</th><td class="pt">PT</td><td>Surgeon + timer</td><td>Surgeon + timer</td><td class="pt">PT</td></tr>
+<tr><th>B</th><td>Surgeon + timer</td><td class="pt">PT</td><td>Patient</td><td>Surgeon + timer</td></tr>
+<tr><th>C</th><td>Watches the call, then Dolores</td><td>Patient</td><td class="pt">PT</td><td>Patient</td></tr></table></div>
+<p style="margin:6px 0 0">In a group of 4, everyone plays the PT once and the observer keeps the timer. In a group of 3, there is no observer: the surgeon keeps the timer, and Person A plays the PT again in Scene 4.</p>
+<h3>Every scene, in this order</h3>
+<ol>
+<li><b>Open the scene tab</b> and read the shared brief together, out loud if that helps.</li>
+<li><b>Find your role</b> in the brief's <b>Roles</b> line. Under <b>Choose your role</b>, tap <b>only your own role</b>. Do not open the other roles, and do not share your screen if you are the surgeon or the patient: those cards hold information the physical therapist should not see.</li>
+<li><b>The timer keeper taps Start</b> on the scene timer below the brief. The timer keeper is the observer: Person D (Person A in Scene 4). In a group of three, the surgeon player is the timer keeper, including in Scene 1, where Person C switches to playing Dolores. When the timer turns amber, the timer keeper says the next step out loud and taps <b>Next step</b>. Everyone else can ignore the timer.</li>
+<li><b>Part 1</b> and <b>Part 2</b> run as the brief describes: Part 1 is the physical therapist and the surgeon; Part 2 is the physical therapist back with the patient while the surgeon listens.</li>
+<li><b>Read-out:</b> the surgeon and the patient read their <b>conversation paths</b> aloud; the observer reads <b>what never happened</b>.</li>
+<li><b>Reflection:</b> one person taps <b>We played the scene: open the reflection</b>, and you answer the reflection questions together.</li>
+<li><b>Rotate roles</b> and open the next scene tab.</li>
+</ol>
+<h3>Your role, step by step</h3>
+<div class="roles4">
+<div class="rbox"><h4>Physical therapist</h4>
+<p><b>Before:</b> read your card. It holds only what would be in the chart. Write your plan in the six boxes, in your own words; there are no hints on purpose. Tap <b>Show my card</b> to keep your plan in front of you.</p>
+<p><b>During:</b> talk. There is no script. Glance at your card if you need it.</p>
+<p><b>After:</b> once the reflection is open, tap <b>Review my plan</b> for feedback on what you planned.</p></div>
+<div class="rbox"><h4>Surgeon</h4>
+<p><b>Before:</b> read your card: who you are and how you react. If your screen shows <b>Start the scene clock</b>, tap it when the scene begins.</p>
+<p><b>During Part 1:</b> listen. When the physical therapist does something on your list under <b>What did the PT just do?</b>, tap it and say the line that appears, in your own words. React only to what they actually say. Do not rescue them.</p>
+<p><b>During Part 2:</b> stay on, stay quiet, and listen.</p>
+<p><b>After:</b> read your conversation path aloud, then tell the group whether the patient heard the same message you gave.</p></div>
+<div class="rbox"><h4>Patient</h4>
+<p><b>Before:</b> read your card. The <b>Held back</b> box is your secret: keep it unless the physical therapist earns it with the right question. If your screen shows <b>Start the scene clock</b>, tap it when the scene begins.</p>
+<p><b>During:</b> when the physical therapist does something on your list, tap it and say your line. When they ask the question that earns your secret, tell them and tap <b>The PT asked. I told them.</b></p>
+<p><b>After:</b> read your conversation path aloud, then say what you were holding back and whether it came out.</p></div>
+<div class="rbox"><h4>Observer (and timer keeper)</h4><p style="font-size:13.5px;color:#5B6770;margin:0 0 4px">Person D, or Person A in Scene 4. In a group of three there is no observer; the surgeon player keeps the timer.</p>
+<p><b>Before:</b> tap <b>Start</b> on the scene timer, then <b>Start the scene clock</b> in your checklist.</p>
+<p><b>During:</b> tap each checklist item the moment it happens; the time is stamped for you. Jot notes. When the timer turns amber, say the next step out loud and tap <b>Next step</b>.</p>
+<p><b>After:</b> tap <b>End of scene: show my summary</b> and read <b>what never happened</b> first.</p></div>
+</div>
+<p style="margin-top:10px"><b>Scene 1 only:</b> Person C observes the call in Part 1, then switches roles for Part 2: tap <b>Dolores, patient (Part 2)</b> under Choose your role. <b>Scene 3 only:</b> the patient, Darnell, is on the call in Part 1. Nothing you do here is saved, submitted, or graded.</p></div></details>
+<div id="app"></div>
+<footer>Jennifer Morgan, PT, DPT  ·  UNT Health Science Center Fort Worth<br>Nothing is saved, submitted, or graded. This is practice for you.</footer>
+</div>
+<script>/*HEAD Four Conversations, Four Patients | Virtual Lab · Role-play with role-specific tools | Scene 1: Dolores, knee · Scene 2: Tessa, hip · Scene 3: Darnell, lumbar spine · Scene 4: Jordan, foot and ankle | <b>How this works.</b> Four scenes, one patient per region, played in order: Scene 1 Dolores (knee), Scene 2 Tessa (hip), Scene 3 Darnell (lumbar spine), Scene 4 Jordan (foot and ankle). Every scene is a call with the surgeon, then back to the patient. <b>Read the step-by-step guide below before you start</b>; it explains exactly what to do in your role. HEAD*/
+/*GUIDE
+<h3>Before you start (once)</h3>
+<ol>
+<li><b>Everyone opens this page on their own device.</b></li>
+<li><b>Decide who is Person A, B, C, and D.</b> Alphabetical by first name works. Your letter tells you your role in every scene; each scene's brief lists it.</li>
+<li><b>Play the scenes in order:</b> Scene 1 Dolores, Scene 2 Tessa, Scene 3 Darnell, Scene 4 Jordan. In a group of four, everyone plays the physical therapist once. In a group of three, Person A plays the physical therapist again in Scene 4.</li>
+</ol>
+<h3>Who does what, scene by scene</h3>
+<p style="margin:4px 0 6px">Find your group size. Your letter tells you your role in every scene. "Timer" means you also keep the scene timer.</p>
+<div class="rtwrap"><table class="rt"><tr><th>Group of 4</th><th>Scene 1<br>Dolores</th><th>Scene 2<br>Tessa</th><th>Scene 3<br>Darnell</th><th>Scene 4<br>Jordan</th></tr>
+<tr><th>A</th><td class="pt">PT</td><td>Surgeon</td><td>Surgeon</td><td>Observer + timer</td></tr>
+<tr><th>B</th><td>Surgeon</td><td class="pt">PT</td><td>Patient</td><td>Surgeon</td></tr>
+<tr><th>C</th><td>Watches the call, then Dolores</td><td>Patient</td><td class="pt">PT</td><td>Patient</td></tr>
+<tr><th>D</th><td>Observer + timer</td><td>Observer + timer</td><td>Observer + timer</td><td class="pt">PT</td></tr></table></div>
+<div class="rtwrap"><table class="rt"><tr><th>Group of 3</th><th>Scene 1<br>Dolores</th><th>Scene 2<br>Tessa</th><th>Scene 3<br>Darnell</th><th>Scene 4<br>Jordan</th></tr>
+<tr><th>A</th><td class="pt">PT</td><td>Surgeon + timer</td><td>Surgeon + timer</td><td class="pt">PT</td></tr>
+<tr><th>B</th><td>Surgeon + timer</td><td class="pt">PT</td><td>Patient</td><td>Surgeon + timer</td></tr>
+<tr><th>C</th><td>Watches the call, then Dolores</td><td>Patient</td><td class="pt">PT</td><td>Patient</td></tr></table></div>
+<p style="margin:6px 0 0">In a group of 4, everyone plays the PT once and the observer keeps the timer. In a group of 3, there is no observer: the surgeon keeps the timer, and Person A plays the PT again in Scene 4.</p>
+<h3>Every scene, in this order</h3>
+<ol>
+<li><b>Open the scene tab</b> and read the shared brief together, out loud if that helps.</li>
+<li><b>Find your role</b> in the brief's <b>Roles</b> line. Under <b>Choose your role</b>, tap <b>only your own role</b>. Do not open the other roles, and do not share your screen if you are the surgeon or the patient: those cards hold information the physical therapist should not see.</li>
+<li><b>The timer keeper taps Start</b> on the scene timer below the brief. The timer keeper is the observer: Person D (Person A in Scene 4). In a group of three, the surgeon player is the timer keeper, including in Scene 1, where Person C switches to playing Dolores. When the timer turns amber, the timer keeper says the next step out loud and taps <b>Next step</b>. Everyone else can ignore the timer.</li>
+<li><b>Part 1</b> and <b>Part 2</b> run as the brief describes: Part 1 is the physical therapist and the surgeon; Part 2 is the physical therapist back with the patient while the surgeon listens.</li>
+<li><b>Read-out:</b> the surgeon and the patient read their <b>conversation paths</b> aloud; the observer reads <b>what never happened</b>.</li>
+<li><b>Reflection:</b> one person taps <b>We played the scene: open the reflection</b>, and you answer the reflection questions together.</li>
+<li><b>Rotate roles</b> and open the next scene tab.</li>
+</ol>
+<h3>Your role, step by step</h3>
+<div class="roles4">
+<div class="rbox"><h4>Physical therapist</h4>
+<p><b>Before:</b> read your card. It holds only what would be in the chart. Write your plan in the six boxes, in your own words; there are no hints on purpose. Tap <b>Show my card</b> to keep your plan in front of you.</p>
+<p><b>During:</b> talk. There is no script. Glance at your card if you need it.</p>
+<p><b>After:</b> once the reflection is open, tap <b>Review my plan</b> for feedback on what you planned.</p></div>
+<div class="rbox"><h4>Surgeon</h4>
+<p><b>Before:</b> read your card: who you are and how you react. If your screen shows <b>Start the scene clock</b>, tap it when the scene begins.</p>
+<p><b>During Part 1:</b> listen. When the physical therapist does something on your list under <b>What did the PT just do?</b>, tap it and say the line that appears, in your own words. React only to what they actually say. Do not rescue them.</p>
+<p><b>During Part 2:</b> stay on, stay quiet, and listen.</p>
+<p><b>After:</b> read your conversation path aloud, then tell the group whether the patient heard the same message you gave.</p></div>
+<div class="rbox"><h4>Patient</h4>
+<p><b>Before:</b> read your card. The <b>Held back</b> box is your secret: keep it unless the physical therapist earns it with the right question. If your screen shows <b>Start the scene clock</b>, tap it when the scene begins.</p>
+<p><b>During:</b> when the physical therapist does something on your list, tap it and say your line. When they ask the question that earns your secret, tell them and tap <b>The PT asked. I told them.</b></p>
+<p><b>After:</b> read your conversation path aloud, then say what you were holding back and whether it came out.</p></div>
+<div class="rbox"><h4>Observer (and timer keeper)</h4><p style="font-size:13.5px;color:#5B6770;margin:0 0 4px">Person D, or Person A in Scene 4. In a group of three there is no observer; the surgeon player keeps the timer.</p>
+<p><b>Before:</b> tap <b>Start</b> on the scene timer, then <b>Start the scene clock</b> in your checklist.</p>
+<p><b>During:</b> tap each checklist item the moment it happens; the time is stamped for you. Jot notes. When the timer turns amber, say the next step out loud and tap <b>Next step</b>.</p>
+<p><b>After:</b> tap <b>End of scene: show my summary</b> and read <b>what never happened</b> first.</p></div>
+</div>
+<p style="margin-top:10px"><b>Scene 1 only:</b> Person C observes the call in Part 1, then switches roles for Part 2: tap <b>Dolores, patient (Part 2)</b> under Choose your role. <b>Scene 3 only:</b> the patient, Darnell, is on the call in Part 1. Nothing you do here is saved, submitted, or graded.</p>
+GUIDE*/
+
+var KNEE='Post-Surgical Knee recording (Lentini): TKA post-op rehabilitation (Jette et al., 2020)';
+var HIP='Hip Postoperative recording: hip arthroscopy protocols and return to sport (Kisner & Borstad, Ch. 20; Domb et al., 2016)';
+var LUM='Post-Surgical Lumbar recording (Lentini): microdiscectomy, early and mid-late phase rehabilitation';
+window.CASE = {
+docs:{
+ s1pt:{title:'Scene 1 · Physical therapist card', rows:[
+  ['Your patient','Dolores Ruiz, 68, retired school librarian, 5 weeks after a right total knee arthroplasty (cemented). Surgeon: Dr. Victor Hale. Follow-up with him at 6 weeks.'],
+  ['Protocol','Weight-bearing as tolerated. ROM as tolerated; emphasize extension early. Quad activation. Goal: 0 to 110 degrees by 6 weeks.'],
+  ['Your findings today','Knee flexion 85 degrees today; 85 degrees at your visit a week ago. Extension lacks 8 degrees. Quad lag with a straight leg raise. Moderate effusion. Incision healed, no redness, warmth, or drainage. No calf pain or swelling.'],
+  ['Your task','Part 1: call Dr. Hale about Dolores. Part 2: after the call, Dolores is in the room with you. Be ready to explain why you said what you said.']]},
+ s1md:{title:'Scene 1 · Surgeon card (Dr. Victor Hale)', rows:[
+  ['Who you are','Orthopedic surgeon. You are returning calls between clinic patients and have about 2 minutes. Dolores\'s surgery was uncomplicated.'],
+  ['What you care about','Hearing about stiffness early, while there is still time to act. PTs who give you numbers and a trend.'],
+  ['If the PT does not say why they are calling within the first 20 seconds','Interrupt: "I\'ve got a patient waiting. What do you need?"'],
+  ['If the PT says she is "stiff" or "slow" without numbers','Push back: "Everyone\'s stiff at 5 weeks. How stiff?"'],
+  ['If the PT gives today\'s flexion and the trend (85 degrees, no change in a week)','Get engaged: "Flat for a week at 85? Good that you called. Push her ROM and keep me posted. If she\'s not moving by her 6-week visit, we\'ll talk about manipulation under anesthesia."'],
+  ['If the PT asks what to tell Dolores about manipulation','"Tell her it\'s a possibility we\'d discuss, not a plan yet. Her work in therapy is what decides it."'],
+  ['If the PT mentions the extension deficit','"Don\'t lose sight of the extension. I\'d rather have her straight than bent."'],
+  ['Before you hang up','If not asked, say: "Call me for increasing warmth, redness, or drainage, or any calf pain."'],
+  ['After you hang up (Part 2)','Stay and listen as the PT tells Dolores about your call. Did she hear the same message you gave? Tell the group afterward.']]},
+ s1pat:{title:'Scene 1, Part 2 · Patient card (Dolores)', rows:[
+  ['Who you are','Dolores, 68, retired school librarian, 5 weeks after your knee replacement. Your knee is stiff and you are discouraged. You watched the PT step away to call your surgeon.'],
+  ['What you bring up','"What did the doctor say? Am I doing something wrong?"'],
+  ['What you do not say unless asked','You cut your home exercises down to once a day, because bending hurts and you were afraid of damaging the new knee. A friend had a manipulation after her knee replacement and told you it was awful.'],
+  ['If the PT says you need a manipulation','Get scared: "Then what\'s the point of coming here?" Go quiet.'],
+  ['If the PT gives you the surgeon\'s message (a possibility, not a plan, and this week\'s work decides it)','Get motivated: "So if I work at it this week, I might not need it?"'],
+  ['If the PT asks how your home exercises are going, or asks you to show them','Admit you cut back, and why.'],
+  ['If the PT uses terms you do not know (flexion, extension, effusion)','Nod, and ask the group afterward what they meant. Do not ask the PT.'],
+  ['At the end','If asked to explain the plan back, get one detail wrong.']]},
+ s1ob:{title:'Scene 1 · Observer card', rows:[
+  ['Your job','Listen to the call. You lead the reflection afterward.'],
+  ['Check each one','Reason for the call in the first sentence. Flexion given as a number. The trend given, not only today\'s number. The extension deficit mentioned. A specific plan. A clear question for the surgeon. Closed the loop on what to report back. Part 2: told Dolores what the surgeon said, in plain words. Part 2: gave the same message about manipulation the surgeon gave. Part 2: asked how her home program is really going. Part 2: checked that she understood, in her own words.'],
+  ['In a group of three','You play Dolores in Part 2. Check the call items during Part 1, then switch to the Dolores role in the list above for Part 2.'],
+  ['Also notice','The moment the surgeon went from brushing it off to engaged. What had the PT just said?']]},
+ s2pt:{title:'Scene 2 · Physical therapist card', rows:[
+  ['Your patient','Tessa Nguyen, 21, college senior and dancer, 3 weeks after a right hip arthroscopy: labral repair and cam osteoplasty.'],
+  ['Orders','Touch-down weight-bearing with crutches for 6 weeks. Avoid straight leg raises for the first 3 to 4 weeks. Stationary cycling from week 1.'],
+  ['Your findings today','Minimal hip pain at rest and with her exercises. Incision healed. Using both crutches in clinic.'],
+  ['Your task','Tessa has questions for you today. Respond as her PT. Be ready to explain why you said what you said.']]},
+ s2pat:{title:'Scene 2 · Patient card (Tessa)', rows:[
+  ['Who you are','Tessa, 21. Three weeks after hip arthroscopy. Your hip barely hurts, and you are exhausted by crutches.'],
+  ['What you bring up','"Campus is huge and the crutches are killing my hands. It doesn\'t even hurt anymore. Can I just walk on it now? And my showcase is in three months. I\'ll be ready, right?"'],
+  ['What you do not say unless asked','The showcase is your senior showcase, the last time you will perform before graduating. Your parents are flying in. Also, you found a hip rehab video online and have been doing straight leg raises twice a day. Only mention the leg raises if asked about your home exercises.'],
+  ['If the PT just says "No" or lists rules','Get frustrated: "Then I\'ll just use one crutch." Make it clear you might walk on it anyway when no one is looking.'],
+  ['If the PT asks what the showcase means to you','Tell them. Get emotional. Be open to options.'],
+  ['If the PT explains why (bone was shaved, and it has to heal before it takes full weight)','Take it seriously: "So it\'s the bone, not the pain. Okay."'],
+  ['If the PT says you will probably be fine for the showcase','Get excited and relieved. The observer should note this.'],
+  ['At the end','If asked to explain the plan back, get one detail wrong.']]},
+ s2ob:{title:'Scene 2 · Observer card', rows:[
+  ['Your job','Listen as her surgeon would. Would you be comfortable with what your patient was just told?'],
+  ['Check each one','Asked what mattered to Tessa before explaining. Explained why, not only what. Gave the reason for touch-down weight-bearing in plain words. Was honest about the showcase timeline. Offered options rather than a verdict. Checked understanding in her own words.'],
+  ['Also notice','Did the straight leg raises come up? What question would have surfaced them?']]},
+ s3pt:{title:'Scene 3 · Physical therapist card', rows:[
+  ['Your patient','Darnell Hayes, 45, warehouse loader, 6 weeks after a right L5-S1 microdiscectomy for a disc herniation with radiculopathy. Surgeon: Dr. Priya Raman.'],
+  ['Your findings today','Leg pain resolved. Neurologic screen unchanged from last visit. Tolerating his walking and strengthening program.'],
+  ['Your task','A joint call with Dr. Raman and Darnell about returning to work. Decide what your role on the call is. Be ready to explain why you said what you said.']]},
+ s3md:{title:'Scene 3 · Surgeon card (Dr. Priya Raman)', rows:[
+  ['Your position','The surgery went well and his leg pain has resolved. You want a graded return: lifting up to 25 lb now, no repeated heavy lifting from the floor, and progression toward full duty at about 12 weeks if he tolerates it.'],
+  ['What you are open to','Modified duty now. A PT-led, job-specific lifting progression. Adjusting the timeline based on how he performs.'],
+  ['If the PT or Darnell asks for full duty now','Decline once, with your reason: "It\'s been six weeks. We step up to full lifting, we don\'t jump."'],
+  ['If no one asks Darnell about his job situation','Give your restrictions, say you will write a note, and move to end the call.'],
+  ['If the job problem comes out','Offer to write the note as a time-limited, graded restriction with a review date, and ask the PT what testing would show he is ready.']]},
+ s3pat:{title:'Scene 3 · Patient card (Darnell)', rows:[
+  ['Who you are','Darnell, 45. Your leg feels great. You want to go back to full duty now.'],
+  ['What you do not say unless asked','Your employer has no light-duty positions. A 25 lb restriction means unpaid leave, and you are the only income for your family. You have already been lifting boxes in your garage to prove to yourself you can.'],
+  ['If no one asks why full duty matters','Agree to the restrictions politely. Privately, you plan to go back to full duty anyway and not tell anyone.'],
+  ['If someone asks','Tell them about the job and the money. Be open to anything that gets you back to work sooner, safely.'],
+  ['If someone asks what you have been doing at home','Admit the garage lifting.'],
+  ['If you are offered options','Ask practical questions: "What do I tell my supervisor on Monday?"']]},
+ s3ob:{title:'Scene 3 · Observer card', rows:[
+  ['Check each one','The surgeon stated restrictions with a reason. Someone asked Darnell what returning to work means to him. Someone asked what his job actually requires. The options answered his real problem. The plan named who does what next.'],
+  ['Also notice','Darnell agreed to everything early. Did anyone notice that agreeing is not the same as deciding?']]}
+},
+cases:[
+{ id:'c1', tab:'Scene 1 · Dolores: the call, then Dolores', start:'a1', introLabel:'Shared brief: everyone reads', gate:'Play the scene first. The reflection questions show model lines, and reading them before you play takes the scene away from you.',
+ roles:[{id:'pt',name:'Physical therapist',who:'Person A',doc:'s1pt',tool:'call'},{id:'md',name:'Dr. Hale, surgeon',who:'Person B',doc:'s1md',tool:'respond'},{id:'pat',name:'Dolores, patient (Part 2)',who:'Person C, after the call',doc:'s1pat',tool:'respond'},{id:'ob',name:'Observer',who:'Person D (Person C also watches the call)',doc:'s1ob',tool:'observe'}],
+ intro:'<p><b>Roles.</b> Person A: physical therapist. Person B: Dr. Victor Hale, the surgeon. Person C: observer during the call, then Dolores.</p><p>Dolores Ruiz, 68, is 5 weeks after a right total knee arthroplasty. The protocol\'s goal is 0 to 110 degrees by 6 weeks. Her flexion has been stuck at 85 degrees for a week. The PT calls Dr. Hale before her 6-week visit.</p><p><b>Two parts.</b> Part 1 (about 3 minutes): the call. Part 2 (about 2 minutes): the PT turns to Dolores and tells her what the surgeon said. Person C observes the call, then plays Dolores. Person B stays and listens to Part 2 as the surgeon.</p><p>Each person chooses their own role below and uses that role\'s tool. Then answer the two reflection decisions together.</p>',
+ endTitle:'Scene 1, reflected', think:['What was the first sentence your PT said on the call? Would it have gotten through to a surgeon with a patient waiting?','Surgeon player: did Dolores hear the same message you gave? Dolores player: what did you hear?','Why did the trend (85 degrees two visits in a row) matter more than today\'s number alone?'],
+ nodes:{
+  a1:{label:'Reflection 1 of 2', short:'Opening line',
+   q:'Which opening would have gotten Dr. Hale engaged fastest?',
+   opts:[
+    {t:'"Hi Dr. Hale, just wanted to let you know Dolores is a little stiff but working hard."', short:'"A little stiff"', r:'detour', next:'a1d', fb:'Everyone is stiff at 5 weeks. Take the detour.'},
+    {t:'"I\'m calling about Dolores Ruiz because her flexion has plateaued. She\'s at 85 degrees, the same as last week, and lacking 8 degrees of extension. I\'d like to increase her visits and focus on ROM before her 6-week follow-up."', short:'Reason, numbers, trend, plan', r:'strong', next:'a2',
+     fb:'The number and the trend in one sentence: that is what makes a surgeon between patients engage. Add why you are calling and your plan, and the call is done. The knee recording notes that flexion stiffness after TKA may lead to manipulation under anesthesia, which is why a surgeon wants to hear about a plateau early. Extension loss can significantly affect gait and function too.', src:KNEE},
+    {t:'"Should I send her back to you early?"', short:'Asked what to do', r:'partly', next:'a2', fb:'A reasonable question, but without the numbers he cannot answer it. Lead with what you found, then ask.'}]},
+  a1d:{detour:true, label:'Adjectives and numbers',
+   q:'Why did "a little stiff" get brushed off?',
+   opts:[
+    {t:'It gives the surgeon nothing to weigh, and no sign that anything has changed', r:'strong', next:'a2', fb:'Right. "Eighty-five degrees, no change in a week" tells him the trajectory. A surgeon decides about stiffness based on the trend, and so does a PT. Back to the main path.'},
+    {t:'Surgeons are not interested in ROM at 5 weeks', r:'detour', retry:true, fb:'His card engaged immediately once he heard the number and the trend.'}]},
+  a2:{label:'Reflection 2 of 2', short:'Manipulation',
+   q:'In Part 2, what was the most effective way to tell Dolores about the call?',
+   opts:[
+    {t:'"You\'re going to need a manipulation."', short:'"You need a manipulation"', r:'detour', next:'END', fb:'Not the surgeon\'s plan, and not your decision. It turns a possibility into a verdict and can undermine her effort in therapy.'},
+    {t:'"Dr. Hale and I talked. Manipulation is something he might discuss with you at 6 weeks if your bending doesn\'t improve. The work we do this week is what decides it."', short:'Same message as the surgeon', r:'strong', next:'END', fb:'The patient hears the same thing from both of you, in plain words, and she knows what she can control. Dolores\'s card also held back that she cut her home exercises to once a day out of fear of damaging the knee. Asking how the program is really going is the other half of looping her in.', src:KNEE},
+    {t:'Told her the plan without mentioning manipulation, to avoid scaring her', short:'Left manipulation out', r:'partly', next:'END', fb:'She will hear about it at 6 weeks either way, possibly for the first time from someone else. Hearing it now, framed well, gives her a reason to push this week. And did your PT find out she had cut her home exercises back? That is what the loop-back was for.'}]}
+ }},
+{ id:'c2', tab:'Scene 2 · Tessa: off the crutches?', start:'b1', introLabel:'Shared brief: everyone reads', gate:'Play the scene first. The reflection questions show model lines, and reading them before you play takes the scene away from you.',
+ roles:[{id:'pt',name:'Physical therapist',who:'Person B',doc:'s2pt',tool:'edu'},{id:'pat',name:'Tessa, patient',who:'Person C',doc:'s2pat',tool:'respond'},{id:'ob',name:'Observer',who:'Person A (and a fourth member)',doc:'s2ob',tool:'observe'}],
+ intro:'<p><b>Roles.</b> Person B: physical therapist. Person C: Tessa. Person A: observer, listening as her surgeon would.</p><p>Tessa Nguyen, 21, a college senior and dancer, is 3 weeks after a right hip arthroscopy with a labral repair and cam osteoplasty. She is on touch-down weight-bearing with crutches for 6 weeks. She arrives with two questions.</p><p>Each person chooses their own role below and uses that role\'s tool. Play the visit for about 5 minutes, then answer the two reflection decisions together.</p>',
+ endTitle:'Scene 2, reflected', think:['Tessa\'s hip barely hurts. How did your PT explain why pain is not the thing that decides her weight-bearing?','Did the straight leg raises come up? If not, what did it cost?'],
+ nodes:{
+  b1:{label:'Reflection 1 of 2', short:'The crutches and the showcase',
+   q:'What did the strongest version of the PT offer Tessa?',
+   opts:[
+    {t:'"No. Six weeks on crutches, and you won\'t be ready for the showcase."', short:'Two verdicts', r:'partly', next:'b2',
+     fb:'Accurate, but two verdicts with no reason or option. Her card had her switching to one crutch, or walking on it when no one was looking.'},
+    {t:'"Tell me about the showcase." Then: the bone that was reshaped needs 6 weeks before it takes full weight, and pain is not the signal. Return to dance usually takes 4 to 6 months and is decided by testing, not the date. Options: how to get around campus without loading the hip, and a role in the showcase that fits where she will be.', short:'Asked, explained, offered options', r:'strong', next:'b2',
+     fb:'After osteoplasty, touch-down weight-bearing for 4 to 6 weeks protects bony healing. Return to sport after labral repair and osteoplasty typically takes 4 to 6 months and is criterion-based: pain-free ROM, strength and single-leg hop at least 90% of the other side, and lumbopelvic control.', src:HIP},
+    {t:'"You\'ll probably be fine for the showcase. Let\'s see how it goes."', short:'"Probably fine"', r:'detour', next:'b1d', fb:'That is a promise the timeline does not support. Take the detour.'}]},
+  b1d:{detour:true, label:'What the timeline says',
+   q:'The showcase is 3 months after surgery. What is the typical return-to-sport window after labral repair with osteoplasty?',
+   opts:[
+    {t:'4 to 6 months, and clearance is criterion-based', r:'strong', next:'b2', fb:'Right. Three months is before the typical minimum. "Probably fine" becomes the thing she remembers, and it sets up a harder conversation later. Honest now, with options she can work toward, is kinder. Back to the main path.', src:HIP},
+    {t:'About 3 months, once pain is gone', r:'detour', retry:true, fb:'The labrum has to reattach to bone and the bony healing has to be confirmed. Pain resolving is not the criterion.'}]},
+  b2:{label:'Reflection 2 of 2', short:'The home exercises',
+   q:'Tessa\'s card hid straight leg raises from an online video. What question would have surfaced them?',
+   opts:[
+    {t:'"Any questions about your exercises?"', short:'"Any questions?"', r:'partly', next:'END', fb:'She had none. She did not know the leg raises were a problem.'},
+    {t:'"Show me everything you are doing at home, including anything you found on your own."', short:'"Show me everything"', r:'strong', next:'END', fb:'Her protocol says to avoid straight leg raises for the first 3 to 4 weeks. Education that only answers the patient\'s question misses what she is already doing.', src:HIP}]}
+ }},
+{ id:'c3', tab:'Scene 3 · Darnell: back to work', start:'c1', introLabel:'Shared brief: everyone reads', gate:'Play the scene first. The reflection questions show model lines, and reading them before you play takes the scene away from you.',
+ roles:[{id:'pt',name:'Physical therapist',who:'Person C',doc:'s3pt',tool:'shared'},{id:'md',name:'Dr. Raman, surgeon',who:'Person A',doc:'s3md',tool:'respond'},{id:'pat',name:'Darnell, patient',who:'Person B',doc:'s3pat',tool:'respond'},{id:'ob',name:'Observer',who:'Person D, in a group of four',doc:'s3ob',tool:'observe'}],
+ intro:'<p><b>Roles.</b> Person C: physical therapist. Person A: Dr. Priya Raman, the spine surgeon. Person B: Darnell. A fourth member observes.</p><p>Darnell Hayes, 45, a warehouse loader, is 6 weeks after an L5-S1 microdiscectomy. His leg pain is gone. A joint call about returning to work.</p><p>Each person chooses their own role below and uses that role\'s tool. Play the call for about 5 minutes, then answer the two reflection decisions together.</p>',
+ endTitle:'Scene 3, reflected', think:['Darnell agreed to the restrictions right away. Did anyone treat that as the end of the conversation?','Whose job was it to ask what his job actually requires, and did anyone ask?'],
+ nodes:{
+  c1:{label:'Reflection 1 of 2', short:'His yes',
+   q:'Darnell agreed to the restrictions early. What should have happened next?',
+   opts:[
+    {t:'Move on to writing the work note', short:'Took the yes', r:'detour', next:'c1d', fb:'His card had him agreeing while planning to go back to full duty anyway. Take the detour.'},
+    {t:'Ask what returning to work means to him, and what the restrictions would mean at his job', short:'Asked what it means', r:'strong', next:'c2', fb:'A restriction that cannot be followed is not a plan. Asking surfaces the real problem: his employer has no light duty, and he is the only income for his family.'}]},
+  c1d:{detour:true, label:'Agreeing is not deciding',
+   q:'What was Darnell holding back?',
+   opts:[
+    {t:'His employer has no light duty, so the restriction means unpaid leave; he is already lifting boxes at home', r:'strong', next:'c2', fb:'Right. Both change the plan: the restriction has to be one he can work under, and the lifting he is already doing can become a supervised progression. Back to the main path.'},
+    {t:'Nothing; he wanted the restrictions', r:'detour', retry:true, fb:'His card says he planned to go back to full duty and not tell anyone.'}]},
+  c2:{label:'Reflection 2 of 2', short:'Closing the call',
+   q:'What did the plan need before the call ended?',
+   opts:[
+    {t:'Dr. Raman writes a time-limited, graded restriction with a review date; the PT builds and tests a job-specific lifting progression; Darnell takes the note to his supervisor and asks about modified duty', short:'Named who does what', r:'strong', next:'END', fb:'Every person leaves with a task. After microdiscectomy, the mid-late phase gradually reintroduces bending, lifting, and higher-level activities, and the PT\'s testing gives the surgeon evidence for the next step.', src:LUM},
+    {t:'Agreement that he will return to full duty when he feels ready', short:'"When you feel ready"', r:'partly', next:'END', fb:'He feels ready now. A plan names the steps, the evidence, and the owners.'},
+    {t:'Clearing him for full duty now, since his leg pain is gone', short:'Full duty now', r:'detour', next:'END', fb:'Pain resolving is not the criterion. The restriction is the surgeon\'s, and the lifting progression is what earns the step up.', src:LUM}]}
+ }}
+]};
+
+// ---- Item-writing revision ----
+var KN='Post-Surgical Knee recording (Lentini): TKA post-op rehabilitation (Jette et al., 2020)';
+window.OPTS = {
+ a1:['"Dolores is a little stiff, but she is working hard."','"Dolores has been stuck at 85 degrees for a week."','"Should I send Dolores back to see you early?"',
+   {t:'"Dolores is at 85 degrees of flexion at 5 weeks."', short:'A number, no trend', r:'partly', next:'a2', fb:'A number, but no trend. Is 85 at 5 weeks a problem, or on its way to 110? The trend is what told Dr. Hale to act now.', src:KN}],
+ a1d:['It gives him no number or trend','Surgeons rarely track ROM at 5 weeks',
+   {t:'It suggests the PT has not examined her', r:'detour', retry:true, fb:'The problem is not the PT\'s credibility. It is that the surgeon has nothing to weigh.'}],
+ a2:['"You are probably going to need a manipulation."','"Manipulation is possible; this week\'s work decides it."','Told her the plan, but left manipulation out',
+   {t:'"Nothing changes; keep doing what you are doing."', short:'"Nothing changes"', r:'partly', next:'END', fb:'Something did change: she has plateaued, and her surgeon raised manipulation. She needs to know why this week matters, and you need to know what she is doing at home.'}],
+ b1:['Gave clear answers: no to both questions','Asked about the showcase, then explained and gave options','Reassured her the showcase will probably be fine',
+   {t:'Explained the bone healing, and left the showcase for later', short:'Why, but skipped the showcase', r:'partly', next:'b2', fb:'The why is there. But she asked about the showcase, and avoiding it leaves her to fill in the answer herself.'}],
+ b1d:['4 to 6 months, and clearance is criterion-based','About 3 months, once her pain is gone',
+   {t:'6 to 9 months, regardless of testing', r:'detour', retry:true, fb:'Longer than the typical window, and it ignores that clearance is criterion-based.'}],
+ b2:['"Any questions about your exercises?"','"Show me everything you do at home."',
+   {t:'"Are you doing your exercises twice a day?"', short:'Yes-or-no question', r:'partly', next:'END', fb:'A yes-or-no question gets "yes." It never surfaces what she added on her own.'}],
+ c1:['Move on to writing his work note now','Ask what the restrictions mean for his job',
+   {t:'Confirm he understands the 25 lb lifting limit', short:'Confirmed understanding', r:'partly', next:'c2', fb:'Understanding the restriction and being able to follow it are different questions. His card had him understanding it perfectly and planning to ignore it.'}],
+ c1d:['No light duty at work; already lifting at home','Nothing; he fully agreed with the restrictions',
+   {t:'Worry that his leg pain will return with lifting', r:'detour', retry:true, fb:'His card was about the job and the money, not symptoms.'}],
+ c2:['A graded note, a lifting progression, and a supervisor talk','An agreement that he returns to full duty when ready','Full-duty clearance now, since his leg pain is gone'],
+};
+
+(function(){ if(!window.OPTS) return;
+  for(const c of window.CASE.cases){ for(const [id,n] of Object.entries(c.nodes)){ const o=window.OPTS[id]; if(!o) continue;
+    if(o.filter(x=>typeof x==='string').length > n.opts.length) throw new Error('option count mismatch at '+id);
+    n.opts = o.map((x,i)=> typeof x==='string' ? Object.assign({}, n.opts[i], {t:x}) : x); } }
+})();
+
+// ---- Challenge revision of the lab reflections: realistic near misses ----
+(function(){
+var KN='Post-Surgical Knee recording (Lentini): TKA post-op rehabilitation (Jette et al., 2020)';
+var HIP='Hip Postoperative recording: hip arthroscopy (Kisner & Borstad, Ch. 20; Domb et al., 2016)';
+var LUM='Post-Surgical Lumbar recording (Lentini)';
+var C={}; window.CASE.cases.forEach(c=>C[c.id]=c);
+var S=(t,short,next,fb,src)=>({t,short,r:'strong',next,fb,src});
+var P=(t,short,next,fb,src)=>({t,short,r:'partly',next,fb,src});
+var D=(t,short,next,fb,src)=>({t,short,r:'detour',next,fb,src});
+// ---------- Scene 1: Dolores ----------
+var N1=C.c1.nodes;
+N1.a1.opts=[
+ S('"Dolores\u2019s flexion has been stuck at 85 degrees for a week."','Number and trend','a2','The number and the trend in one sentence: that is what makes a surgeon between patients engage. Add why you are calling and your plan, and the call is done. A plateau matters because flexion stiffness after TKA may lead to manipulation under anesthesia, so surgeons want to hear about it early.',KN),
+ P('"Dolores is at 85 degrees of flexion at 5 weeks."','Number, no trend','a2','A number, but a snapshot. Is 85 at 5 weeks a problem, or on its way to 110? The trend, not the single value, is what told Dr. Hale to act now.',KN),
+ P('"Dolores is behind your protocol, and I\u2019m worried about stiffness."','Concern, no data','a2','You named the concern and tied it to his protocol, which helps. But "behind" and "worried" are judgments; he still has no number or trend to weigh.',KN),
+ P('"Should I send Dolores back to see you before 6 weeks?"','Question first','a2','A fair question, asked before he has anything to answer it with. Lead with the finding and the trend; then ask.',KN)];
+N1.a2.opts=[
+ S('"Manipulation is possible; this week\u2019s work decides it."','Possible; this week decides','END','She hears the same message the surgeon gave, in plain words, and she knows what she controls. Her card also held back that she had cut her home exercises out of fear of damaging the knee; asking her to walk you through her home program is the other half of looping her in.',KN),
+ P('"Dr. Hale may want to do a manipulation at 6 weeks."','Surgeon\u2019s plan, no role for her','END','Accurate, but it frames manipulation as the surgeon\u2019s plan and leaves out what she controls: her work this week is what decides it.',KN),
+ P('"If you push hard this week, you won\u2019t need a manipulation."','A promise','END','Motivating, but it promises an outcome neither of you controls. The honest version: this week\u2019s work is what decides it.',KN),
+ P('Told her the plan, but left manipulation out','Left it out','END','She will hear about it at 6 weeks either way, possibly for the first time from someone else. Hearing it now, framed well, gives her a reason to push this week.',KN)];
+// ---------- Scene 2: Tessa ----------
+var N2=C.c2.nodes;
+N2.b1.opts=[
+ S('Asked about the showcase, then explained and gave options','Asked, explained, options','b2','She learned what the showcase meant before explaining anything, then gave the why (bone healing sets touch-down weight-bearing, not pain) and options she could act on. Return to dance after labral repair with osteoplasty typically takes 4 to 6 months and is criterion-based, so honesty about the timeline is part of the options.',HIP),
+ P('Explained the bone healing, and left the showcase for later','Why, but skipped the showcase','b2','The why is there. But she asked about the showcase, and avoiding it leaves her to fill in the answer herself.',HIP),
+ P('Explained why, and said the showcase depends on her testing','Why and honest, no asking','b2','Accurate and honest. But the PT never learned what the showcase meant to her, so the conversation could not get to options that fit it.',HIP),
+ D('No to walking on it; the showcase if she works hard','Showcase promised on effort','b1d','Right on weight-bearing, but the showcase answer is a promise the timeline does not support. Take the detour.')];
+N2.b2.opts=[
+ S('"Show me everything you do at home."','Show me','END','Asking her to show you surfaces what she added on her own. Her protocol says to avoid straight leg raises for the first 3 to 4 weeks, and she had found them in an online video.',HIP),
+ P('"Are you doing anything else besides what I gave you?"','Targeted yes/no','END','Closer: it points at the right thing. But a yes-or-no question invites "no," especially from a patient who does not know the extra exercise is a problem.',HIP),
+ P('"Are you doing your exercises twice a day?"','Adherence yes/no','END','A yes-or-no question about adherence gets "yes." It never surfaces what she added on her own.',HIP),
+ P('"Any questions about your exercises?"','Any questions','END','She had none. She did not know the leg raises were a problem.',HIP)];
+// ---------- Scene 3: Darnell ----------
+var N3=C.c3.nodes;
+N3.c1.opts=[
+ S('Ask what the restrictions mean for his job','Asked what it means for his job','c2','A restriction that cannot be followed is not a plan. Asking surfaces the real problem: his employer has no light duty, and he is the only income for his family.',LUM),
+ P('Confirm he understands the 25 lb lifting limit','Confirmed understanding','c2','Understanding the restriction and being able to follow it are different questions. His card had him understanding it perfectly and planning to ignore it.',LUM),
+ P('Ask Dr. Raman to explain why the limit is 25 lb','Surgeon explains the reason','c2','Giving the reason helps, but the conversation stays centered on the restriction. Darnell\u2019s real problem, the job and the money, stays hidden.',LUM),
+ P('Give him a handout on safe lifting mechanics','Lifting handout','c2','Useful later, but it assumes his yes was real. His card had him planning to go back to full duty anyway.',LUM)];
+N3.c2.opts=[
+ S('A graded note, a lifting progression, and a supervisor talk','Three owners, three tasks','END','Every person leaves with a task, including the patient. After microdiscectomy, the mid-late phase gradually reintroduces bending, lifting, and higher-level activities, and the PT\u2019s testing gives the surgeon evidence for each step up.',LUM),
+ P('A graded note and a lifting progression, reviewed at 12 weeks','Two owners, no patient task','END','Close. The surgeon and the PT both have tasks, but Darnell does not; the plan never reaches his supervisor, which is where it breaks.',LUM),
+ P('An agreement that he returns to full duty when ready','"When ready"','END','He feels ready now. A plan names the steps, the evidence, and the owners.',LUM),
+ D('A full-duty note with a reminder to lift carefully','Full duty, lift carefully','END','A tempting compromise, given what he stands to lose, but it trades the graded restriction for a caution he has no way to act on. The mid-late phase reintroduces lifting gradually, with testing that earns each step.',LUM)];
+// retire detour nodes nothing points to anymore
+window.CASE.cases.forEach(c=>{ var used=new Set([c.start]); Object.values(c.nodes).forEach(n=>n.opts.forEach(o=>{ if(!o.retry) used.add(o.next); })); Object.keys(c.nodes).forEach(id=>{ if(c.nodes[id].detour && !used.has(id)) delete c.nodes[id]; }); });
+})();
+
+// ---- Every scene ends with the PT bringing it back to the patient ----
+(function(){
+var HIP='Hip Postoperative recording: hip arthroscopy (Kisner & Borstad, Ch. 20; Domb et al., 2016)';
+var LUM='Post-Surgical Lumbar recording (Lentini)';
+var D=window.CASE.docs, C={}; window.CASE.cases.forEach(c=>C[c.id]=c);
+var row=(doc,label)=>D[doc].rows.find(r=>r[0]===label);
+var S=(t,short,next,fb,src)=>({t,short,r:'strong',next,fb,src});
+var P=(t,short,next,fb,src)=>({t,short,r:'partly',next,fb,src});
+
+// ================= Scene 2: Tessa =================
+row('s2pt','Your task')[1]='Part 1: Tessa has asked to get off her crutches and about her showcase. Before you answer, you step out and reach her surgeon, Dr. Lena Ortiz, for about 2 minutes. Part 2: bring it back to Tessa. Be ready to explain why you said what you said.';
+D.s2md={title:'Scene 2, Part 1 · Surgeon card (Dr. Lena Ortiz)', rows:[
+ ['Who you are','Orthopedic surgeon who performed Tessa\u2019s hip arthroscopy: labral repair and cam osteoplasty. You are between cases and have about 2 minutes.'],
+ ['What you care about','The bone reshaped in the osteoplasty has to heal before it takes full weight, and the repaired labrum has to reattach.'],
+ ['If the PT does not say why they are calling within the first 20 seconds','Interrupt: "I\u2019m between cases. What do you need?"'],
+ ['If the PT asks whether she can come off crutches because it does not hurt','Push back: "Pain isn\u2019t the issue. It\u2019s the bone. Touch-down through 6 weeks."'],
+ ['If the PT gives the week, the procedure, and a clear question','Answer directly: "No change. Touch-down through 6 weeks. I\u2019ll see her at 6."'],
+ ['If the PT asks about the showcase','"It depends on how she tests. Most of my patients take 4 to 6 months to get back to dance. Don\u2019t promise her anything."'],
+ ['If the PT asks you to tell Tessa yourself','"You\u2019ll see her before I do. Tell her it\u2019s about the bone healing, not the pain."'],
+ ['Before you hang up','If not asked, say: "Call me if her pain changes or she can\u2019t keep the weight off it."'],
+ ['After you hang up (Part 2)','Stay and listen as the PT talks with Tessa. Did she hear the same message you gave?']]};
+var tr=D.s2pat.rows;
+tr.unshift(['Part 1','At the start of the visit, ask your two questions (below). The PT steps out to call your surgeon. Wait for the PT to come back; Part 2 is your conversation.']);
+row('s2pat','What you bring up')[0]='What you ask at the start';
+row('s2pat','At the end')[1]='If the PT asks you to explain the plan back, do it, but get one detail wrong.';
+row('s2ob','Your job')[1]='Part 1: listen to the call. Part 2: listen as her surgeon would. Would you be comfortable with what your patient was just told?';
+row('s2ob','Check each one')[1]='Part 1: reason for the call in the first sentence. Part 1: gave the week, the procedure, and a clear question. Part 1: closed the loop on what to report. Part 2: asked what mattered to Tessa before explaining. Part 2: gave the surgeon\u2019s reason in plain words. Part 2: was honest about the showcase timeline. Part 2: offered options rather than a verdict. Part 2: checked understanding in her own words.';
+var c2=C.c2;
+c2.tab='Scene 2 · Tessa: the call, then Tessa';
+c2.roles=[{id:'pt',name:'Physical therapist',who:'Person B',doc:'s2pt',tool:'edu'},{id:'md',name:'Dr. Ortiz, surgeon (Part 1)',who:'Person A, then stays to listen',doc:'s2md',tool:'respond'},{id:'pat',name:'Tessa, patient',who:'Person C',doc:'s2pat',tool:'respond'},{id:'ob',name:'Observer',who:'Person D, in a group of four',doc:'s2ob',tool:'observe'}];
+c2.intro='<p><b>Roles.</b> Person B: physical therapist. Person A: Dr. Lena Ortiz, the surgeon, then stays to listen. Person C: Tessa. A fourth member observes.</p><p>Tessa Nguyen, 21, a college senior and dancer, is 3 weeks after a right hip arthroscopy with a labral repair and cam osteoplasty. She is on touch-down weight-bearing with crutches for 6 weeks. She arrives with two questions.</p><p><b>Two parts.</b> Part 1 (about 2 minutes): Tessa asks her questions, and the PT steps out to call Dr. Ortiz. Part 2 (about 3 minutes): the PT brings it back to Tessa.</p><p>Each person chooses their own role below and uses that role\u2019s tool. Then answer the three reflection decisions together.</p>';
+c2.nodes.b0={label:'Reflection 1 of 3', short:'The call to Dr. Ortiz',
+ q:'Which request to Dr. Ortiz would have gotten the clearest answer?',
+ opts:[
+  S('"Week 3 after osteoplasty, pain-free; touch-down still through 6?"','Week, procedure, clear question','b1','The week, the procedure, and a question she can answer in one word. It also frames the right issue: after osteoplasty, touch-down weight-bearing for 4 to 6 weeks protects bony healing, whatever the pain says.',HIP),
+  P('"Tessa wants off her crutches. Is that okay with you?"','Request, no findings','b1','A clear request, but no week, no procedure, and no findings. The surgeon has to ask what has changed before she can answer.',HIP),
+  P('"Tessa has minimal pain now; can we progress her weight-bearing?"','Pain as the reason','b1','Close, but it frames pain as the criterion. After osteoplasty, bone healing sets touch-down weight-bearing, and framing it around pain invites the wrong discussion.',HIP),
+  P('"Can you tell Tessa herself that she has to stay on crutches?"','Hand it to the surgeon','b1','The surgeon will see her at 6 weeks; you will see her in 2 minutes. The message has to come back through you, in words Tessa can use.',HIP)]};
+c2.start='b0';
+c2.nodes.b1.label='Reflection 2 of 3'; c2.nodes.b2.label='Reflection 3 of 3';
+c2.think=['Did Tessa hear the same message Dr. Ortiz gave? Surgeon player, what did you hear?','Tessa\u2019s hip barely hurts. How did your PT explain why pain is not what decides her weight-bearing?','Did the straight leg raises come up? If not, what did it cost?'];
+
+// ================= Scene 3: Darnell =================
+row('s3pt','Your task')[1]='Part 1: a joint call with Dr. Raman and Darnell about returning to work. Decide what your role on the call is. Part 2: after Dr. Raman hangs up, you and Darnell are alone. Bring it back to him. Be ready to explain why you said what you said.';
+D.s3md.rows.push(['After you hang up (Part 2)','Stay and listen as the PT talks with Darnell. Does he leave with the plan you agreed to?']);
+D.s3pat.rows.push(['After the surgeon hangs up (Part 2)','You are alone with the PT now.']);
+D.s3pat.rows.push(['If the PT asks you to explain the plan','Explain it, but leave out anything about your supervisor.']);
+D.s3pat.rows.push(['If the PT asks what you will tell your supervisor','Admit you do not know how to bring it up, and that you are afraid it will cost you your spot. Accept help rehearsing it.']);
+D.s3pat.rows.push(['If the PT asks about lifting at home','Say you will keep lifting in the garage unless someone gives you a better plan.']);
+row('s3ob','Check each one')[1]='Part 1: the surgeon stated restrictions with a reason. Part 1: someone asked what returning to work means to Darnell and what his job requires. Part 1: the options answered his real problem. Part 1: the plan named who does what next. Part 2: the PT asked Darnell to explain the plan in his own words. Part 2: the PT helped him plan the supervisor conversation. Part 2: the garage lifting became part of the plan.';
+var c3=C.c3;
+c3.tab='Scene 3 · Darnell: the call, then Darnell';
+c3.roles.find(r=>r.id==='md').who='Person A, then stays to listen';
+c3.intro='<p><b>Roles.</b> Person C: physical therapist. Person A: Dr. Priya Raman, the spine surgeon, then stays to listen. Person B: Darnell. A fourth member observes.</p><p>Darnell Hayes, 45, a warehouse loader, is 6 weeks after an L5-S1 microdiscectomy. His leg pain is gone.</p><p><b>Two parts.</b> Part 1 (about 3 minutes): a joint call with Dr. Raman about returning to work. Part 2 (about 2 minutes): after she hangs up, the PT and Darnell are alone, and the PT brings it back to him.</p><p>Each person chooses their own role below and uses that role\u2019s tool. Then answer the three reflection decisions together.</p>';
+c3.nodes.c1.label='Reflection 1 of 3'; c3.nodes.c2.label='Reflection 2 of 3';
+c3.nodes.c3r={label:'Reflection 3 of 3', short:'Back with Darnell',
+ q:'After Dr. Raman hung up, what did Darnell most need from the PT?',
+ opts:[
+  S('The plan in his words, and his supervisor conversation','Teach-back and supervisor plan','END','The call made a plan; Part 2 is where it becomes his. Hearing it back in his own words shows what landed, and his card left out the supervisor, which is exactly where the plan breaks. Rehearsing that conversation, and turning his garage lifting into supervised progression, is what makes the plan survive Monday.',LUM),
+  P('A written summary of the restrictions to take to work','Written summary','END','Useful, but a handout does not show whether he understood it or will use it. Ask him to tell you the plan, and help him plan what he will say to his supervisor.',LUM),
+  P('Reassurance that the restrictions are only temporary','Reassurance','END','True and helpful, but it does not show whether he will follow the plan or what he will tell his supervisor.',LUM),
+  P('A reminder not to lift anything heavy at home','Reminder about home lifting','END','It restates the rule, and his card has him lifting in the garage anyway. Ask what he is doing and make it part of a supervised progression.',LUM)]};
+c3.nodes.c2.opts.forEach(o=>{ if(o.next==='END') o.next='c3r'; });
+c3.think=['Did Darnell leave with the same plan Dr. Raman agreed to? Surgeon player, what did you hear?','Darnell agreed to the restrictions right away. Did anyone treat that as the end of the conversation?','What will Darnell say to his supervisor on Monday? Could your PT answer that?'];
+
+// ================= Scene 1: label reflections consistently =================
+C.c1.nodes.a1.label='Reflection 1 of 2'; C.c1.nodes.a2.label='Reflection 2 of 2';
+})();
+
+// ---- Scene 4: Jordan, lateral ankle ligament repair, return to sport ----
+(function(){
+var FA='Foot and Ankle Postoperative recording: lateral ligament repair (Kisner & Colby, Ch. 22)';
+var D=window.CASE.docs;
+D.s4pt={title:'Scene 4 · Physical therapist card', rows:[
+ ['Your patient','Jordan Ellis, 19, college volleyball middle blocker, 4 months after a right lateral ankle ligament repair (modified Brostr\u00f6m-Gould) for chronic instability. Surgeon: Dr. Samuel Okafor.'],
+ ['Your testing today','No pain. Negative anterior drawer and talar tilt. Normal gait on level and uneven ground. Fibularis strength on handheld dynamometry: 95% of the left. Single hop 94%, triple hop 92%, figure-eight hop 84%. Star Excursion Balance Test within 4% of the left in every direction. FAAM Sport subscale: 88%.'],
+ ['Context','Her coach wants her back for the conference tournament in 2 weeks. You have not cleared her.'],
+ ['Your task','Part 1: call Dr. Okafor about her return to sport. Part 2: bring it back to Jordan. Be ready to explain why you said what you said.']]};
+D.s4md={title:'Scene 4, Part 1 · Surgeon card (Dr. Samuel Okafor)', rows:[
+ ['Who you are','Foot and ankle surgeon who repaired Jordan\u2019s ankle. Her coach called your office this morning.'],
+ ['What you care about','Protecting the repair. Clearance is a joint decision with the PT, based on criteria, not the tournament date.'],
+ ['If the PT does not say why they are calling within the first 20 seconds','Interrupt: "Is this about Jordan and the tournament? Her coach already called."'],
+ ['If the PT says she is "almost ready" or "looks good"','"Almost how? Which tests?"'],
+ ['If the PT names what she meets, what she misses, and proposes a plan','Agree: "Then not for the tournament. Retest in two weeks. Brace for everything when she goes back."'],
+ ['If the PT recommends clearing her anyway','If the PT has given her hop numbers: "With a figure-eight at 84? No." If not: "What does her hop testing show?"'],
+ ['If the PT asks what to tell the coach','"Tell Jordan first. I\u2019ll call the coach: it\u2019s a joint decision, and we retest in two weeks."'],
+ ['Before you hang up','If not asked, say: "Call me if she has any giving-way episodes."'],
+ ['After you hang up (Part 2)','Stay and listen as the PT talks with Jordan. Did she hear the same message you gave?']]};
+D.s4pat={title:'Scene 4 · Patient card (Jordan)', rows:[
+ ['Part 1','Before the PT steps out to call your surgeon, say: "Coach needs me for the tournament. I feel great." Then wait; Part 2 is your conversation.'],
+ ['Who you are','Jordan, 19, sophomore middle blocker. You feel ready, and you want to play in the tournament.'],
+ ['What you do not say unless asked','You won the starting spot before your injury, and another player has held it all season; you are afraid you will lose it for good. Last week you played two pickup games with teammates, and your ankle rolled slightly twice. You stopped wearing your brace because it feels weird.'],
+ ['If the PT only says you are not cleared','Push back: "Then I\u2019ll just tape it and play."'],
+ ['If the PT asks what the tournament means to you','Tell them about the starting spot. Get emotional. Ask what you can do in the next two weeks.'],
+ ['If the PT asks yes-or-no whether your ankle has given way','Say "Not really."'],
+ ['If the PT asks you to walk through what you have done on your ankle','Admit the pickup games and the two times it rolled.'],
+ ['If the PT asks about your brace','Admit you stopped wearing it. Ask why it matters if you are "healed."'],
+ ['At the end','If the PT asks you to explain the plan back, do it, but get one detail wrong.']]};
+D.s4ob={title:'Scene 4 · Observer card', rows:[
+ ['Your job','Part 1: listen to the call. Part 2: listen as her surgeon would.'],
+ ['Check each one','Part 1: reason for the call in the first sentence. Part 1: named which criteria she meets and which she does not, with numbers. Part 1: proposed a plan and a retest date. Part 1: closed the loop on what to report. Part 2: asked what the tournament means to Jordan. Part 2: asked what she has done on her ankle, not yes-or-no. Part 2: explained why the brace matters. Part 2: checked understanding in her own words.'],
+ ['Also notice','Did the pickup games come up? What question surfaced them, or would have?']]};
+var S=(t,short,next,fb)=>({t,short,r:'strong',next,fb,src:FA});
+var P=(t,short,next,fb)=>({t,short,r:'partly',next,fb,src:FA});
+window.CASE.cases.push({ id:'c4', tab:'Scene 4 · Jordan: the call, then Jordan', start:'d0', introLabel:'Shared brief: everyone reads', gate:'Play the scene first. The reflection questions show model lines, and reading them before you play takes the scene away from you.',
+ roles:[{id:'pt',name:'Physical therapist',who:'Person D (in a group of three, Person A)',doc:'s4pt',tool:'rts'},{id:'md',name:'Dr. Okafor, surgeon (Part 1)',who:'Person B, then stays to listen',doc:'s4md',tool:'respond'},{id:'pat',name:'Jordan, patient',who:'Person C',doc:'s4pat',tool:'respond'},{id:'ob',name:'Observer',who:'Person A, in a group of four',doc:'s4ob',tool:'observe'}],
+ intro:'<p><b>Roles.</b> Person D: physical therapist (in a group of three, Person A). Person B: Dr. Samuel Okafor, the surgeon, then stays to listen. Person C: Jordan. In a group of four, Person A observes.</p><p>Jordan Ellis, 19, a college volleyball middle blocker, is 4 months after a right lateral ankle ligament repair for chronic instability. Her coach wants her back for the conference tournament in 2 weeks.</p><p><b>Two parts.</b> Part 1 (about 2 minutes): the PT calls Dr. Okafor about her return to sport. Part 2 (about 3 minutes): the PT brings it back to Jordan.</p><p>Each person chooses their own role below and uses that role\u2019s tool. Then answer the three reflection decisions together.</p>',
+ endTitle:'Scene 4, reflected', think:['Did Jordan hear the same message Dr. Okafor gave? Surgeon player, what did you hear?','She felt great and passed most of her testing. What would have happened if no one asked what she had been doing on her ankle?','How did your PT explain the brace to a player who thinks she is healed?'],
+ endText:'<p>Look at the path above. Every scene today had the same shape: the surgeon call, then back to the patient. Here, the call was about criteria, and the patient conversation was about what the criteria could not see.</p>',
+ nodes:{
+  d0:{label:'Reflection 1 of 3', short:'The call to Dr. Okafor', q:'Which opening would have gotten Dr. Okafor to a decision fastest?',
+   opts:[
+    S('"Jordan meets every criterion except her figure-eight hop, at 84%."','Criteria and the one she misses','d1','What she meets, what she misses, and the number, in one sentence. After lateral ligament repair, return to sport requires normal fibularis strength, negative anterior drawer and talar tilt, normal gait on level and uneven ground, and hop tests, SEBT, and FAAM, with strength and hop symmetry of at least 90%. One hop at 84% is the finding that decides the date.'),
+    P('"Jordan is almost ready; can we clear her for the tournament?"','"Almost ready"','d1','"Almost ready" is an adjective, and the request comes before the data. He still has to ask which tests.'),
+    P('"Her testing looks good overall; I\u2019d give her two more weeks."','"Good overall" plus a plan','d1','A plan, but "good overall" hides the one criterion that decides it. Name what she meets and what she misses.'),
+    P('"Can you clear Jordan? Her coach is asking about the tournament."','The coach\u2019s date','d1','It frames the decision around the coach\u2019s date. Clearance is criterion-based; lead with her results.')]},
+  d1:{label:'Reflection 2 of 3', short:'What she did not say', q:'Jordan\u2019s card hid two giving-way episodes in pickup games. What would have surfaced them?',
+   opts:[
+    S('"Walk me through everything you did on your ankle."','Walk me through it','d2','An open request surfaces what she would not volunteer: two pickup games, two times the ankle rolled. Perceived readiness belongs in the decision, and she feels great; only asking what she has actually done reveals the giving way.'),
+    P('"Has your ankle given way at all since last visit?"','Yes-or-no giving way','d2','Close, and it names the right thing. But it is a yes-or-no question, and her card answers "Not really."'),
+    P('"How confident do you feel about playing in the tournament?"','Confidence','d2','Perceived readiness belongs in the decision, but she feels great. Confidence does not surface what she did in pickup games.'),
+    P('"Are you still wearing your brace for your drills?"','The brace','d2','It surfaces the brace, not the pickup games or the giving way.')]},
+  d2:{label:'Reflection 3 of 3', short:'The plan', q:'What did the plan need before Jordan left?',
+   opts:[
+    S('Retest in two weeks, the prevention program, and her brace','Retest, prevention, brace','END','The plan answers what she has and has not met: retest in two weeks; keep building with plyometrics and a proprioceptive and plyometric prevention program, which the recording calls for before high-risk sport; and a functional stirrup brace or tape for high-risk activity throughout the first season back. Tell Dr. Okafor about the two giving-way episodes, as he asked, and hear the plan back in her words.'),
+    P('Clearance for the tournament, as long as she wears a brace','Clear with a brace','END','The brace is part of the plan, but it does not replace the criterion she has not met. A brace or tape is for high-risk activity once she is cleared, through the first season back.'),
+    P('No volleyball until next season, to protect the repair','Out until next season','END','Too restrictive, and time-based. She is one criterion away; retest in two weeks.'),
+    P('Retest in two weeks, and leave the brace up to her','Brace optional','END','The retest is right. The brace is not optional: the recording calls for a brace or tape for high-risk activity throughout and beyond formal rehab, and her two giving-way episodes make the case.')]}
+ }});
+})();
+
+// ---- Explicit run-sheet: scene order and step order ----
+(function(){
+var C={}; window.CASE.cases.forEach(c=>C[c.id]=c);
+var steps=function(part1,part2,who){ return '<p><b>How this scene runs, in order (about 9 minutes):</b></p><ol style="margin:4px 0 10px 18px;padding:0">'+
+ '<li><b>The timer keeper starts the scene timer.</b> The timer keeper is the observer: Person D (Person A in Scene 4). In a group of three, it is the surgeon player. They tap Start on the timer just below this brief. When a step runs out, the timer turns amber and chimes; the timer keeper says the next step aloud ("Part 2: back to the patient") and taps Next step. Everyone else can ignore the timer.</li>'+
+ '<li><b>Read this brief together</b>, then each person opens only their own role below. The PT plans in the planner while the surgeon and patient read their cards (about 1.5 minutes).</li>'+
+ '<li><b>Part 1 (about 2 minutes):</b> '+part1+'</li>'+
+ '<li><b>Part 2 (about 3 minutes):</b> '+part2+'</li>'+
+ '<li><b>Read-out (about 1 minute):</b> the surgeon and patient read their conversation paths aloud; the observer names what never happened.</li>'+
+ '<li><b>Reflection (about 1.5 minutes):</b> click "We played the scene" and answer the reflection decisions together.</li>'+
+ '<li><b>Rotate roles</b> and open the next scene tab.</li></ol>'+(who||''); };
+C.c1.intro='<p><b>Scene 1 of 4 · Knee.</b> Dolores Ruiz, 68, is 5 weeks after a right total knee arthroplasty. Her flexion has been stuck at 85 degrees for a week, and her surgeon\u2019s protocol goal is 110 by week 6.</p>'+
+ '<p><b>Roles.</b> Person A: physical therapist. Person B: Dr. Victor Hale, the surgeon. Person C: watches the call, then plays Dolores. Person D: observer and timer keeper. <b>Group of 3:</b> no Person D; Person B (Dr. Hale) keeps the timer.</p>'+
+ steps('<b>the PT and Dr. Hale, by phone.</b> Dolores is not part of the call; Person C observes it.','<b>the PT and Dolores.</b> Person C switches to the Dolores role. The PT tells her what Dr. Hale said and finds out how her home program is really going. Dr. Hale stays on and listens.');
+C.c2.intro='<p><b>Scene 2 of 4 · Hip.</b> Tessa Nguyen, 21, a college senior and dancer, is 3 weeks after a right hip arthroscopy with a labral repair and cam osteoplasty, on touch-down weight-bearing with crutches for 6 weeks.</p>'+
+ '<p><b>Roles.</b> Person B: physical therapist. Person A: Dr. Lena Ortiz, the surgeon. Person C: Tessa. Person D: observer and timer keeper. <b>Group of 3:</b> no observer; Person A (Dr. Ortiz) keeps the timer.</p>'+
+ steps('<b>Tessa opens</b> by asking her two questions (off the crutches? the showcase?). The PT says they will check with her surgeon. Then <b>the PT and Dr. Ortiz, by phone.</b> Tessa waits and does not react to the call.','<b>the PT and Tessa.</b> The PT brings Dr. Ortiz\u2019s answer back to Tessa. Dr. Ortiz stays on and listens.');
+C.c3.intro='<p><b>Scene 3 of 4 · Lumbar spine.</b> Darnell Hayes, 45, a warehouse loader, is 6 weeks after an L5-S1 microdiscectomy. His leg pain is gone, and he wants full duty now.</p>'+
+ '<p><b>Roles.</b> Person C: physical therapist. Person A: Dr. Priya Raman, the surgeon. Person B: Darnell. Person D: observer and timer keeper. <b>Group of 3:</b> no observer; Person A (Dr. Raman) keeps the timer.</p>'+
+ steps('<b>a joint call: the PT, Dr. Raman, and Darnell together</b>, about returning to work.','<b>the PT and Darnell, alone.</b> Dr. Raman hangs up but stays on and listens. The PT brings the plan back to Darnell and helps him prepare for his supervisor.');
+C.c4.intro='<p><b>Scene 4 of 4 · Foot and ankle.</b> Jordan Ellis, 19, a college volleyball middle blocker, is 4 months after a right lateral ankle ligament repair. Her coach wants her back for the conference tournament in 2 weeks.</p>'+
+ '<p><b>Roles.</b> Person D: physical therapist. Person B: Dr. Samuel Okafor, the surgeon. Person C: Jordan. Person A: observer and timer keeper. <b>Group of 3:</b> Person A plays the physical therapist again; Person B (Dr. Okafor) keeps the timer.</p>'+
+ steps('<b>Jordan opens:</b> "Coach needs me for the tournament. I feel great." The PT says they will talk with her surgeon first. Then <b>the PT and Dr. Okafor, by phone.</b> Jordan waits and does not react to the call.','<b>the PT and Jordan.</b> The PT brings Dr. Okafor\u2019s answer back to Jordan. Dr. Okafor stays on and listens.');
+var W=(n,s,w)=>({name:n,sec:s,who:w}), RO='The surgeon and patient read their paths aloud. The observer names what never happened.', RF='Open the reflection and answer it together. Then rotate roles and open the next tab.';
+C.c1.timer=[W('Read and plan',90,'Everyone reads the brief and opens their own role. The PT plans.'),W('Part 1: PT and Dr. Hale',120,'By phone. Dolores is not on the call; Person C observes it.'),W('Part 2: PT and Dolores',180,'Person C plays Dolores. Dr. Hale stays on and listens.'),W('Read-out',60,RO),W('Reflect and rotate',90,RF)];
+C.c2.timer=[W('Read and plan',90,'Everyone reads the brief and opens their own role. The PT plans.'),W('Part 1: Tessa asks, then PT and Dr. Ortiz',120,'Tessa asks her two questions, then waits while the PT calls Dr. Ortiz.'),W('Part 2: PT and Tessa',180,'The PT brings the answer back to Tessa. Dr. Ortiz listens.'),W('Read-out',60,RO),W('Reflect and rotate',90,RF)];
+C.c3.timer=[W('Read and plan',90,'Everyone reads the brief and opens their own role. The PT plans.'),W('Part 1: joint call with PT, Dr. Raman, and Darnell',120,'All three on the call, about returning to work.'),W('Part 2: PT and Darnell, alone',180,'Dr. Raman hangs up and listens.'),W('Read-out',60,RO),W('Reflect and rotate',90,RF)];
+C.c4.timer=[W('Read and plan',90,'Everyone reads the brief and opens their own role. The PT plans.'),W('Part 1: Jordan asks, then PT and Dr. Okafor',120,'Jordan says she feels great, then waits while the PT calls Dr. Okafor.'),W('Part 2: PT and Jordan',180,'The PT brings the answer back to Jordan. Dr. Okafor listens.'),W('Read-out',60,RO),W('Reflect and rotate',90,RF)];
+})();
+</script>
+<script>(function(){
+// Role-specific tools. Attaches to window.ROLEKIT; engine calls ROLEKIT.render(caseObj, state, container, rerender)
+const $ = (h)=>{const t=document.createElement('template');t.innerHTML=h.trim();return t.content.firstChild;};
+const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt = ms => { const s=Math.floor(ms/1000); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); };
+const JARGON = {'posterolateral':'from the back of the hip','arthroplasty':'hip replacement','adduction':'letting your knee cross the middle','internal rotation':'turning your knee or toes inward','abduction':'moving your leg out to the side','dorsiflexion':'pulling your toes up toward your shin','plantarflexion':'pointing your foot down','eccentric':'slow lowering','thaa':'','tha':'hip replacement','wbat':'as much weight as is comfortable','weight-bearing as tolerated':'as much weight as is comfortable','kinesiophobia':'fear of moving','spondylolisthesis':'a slipped vertebra','capsule':'the lining around the joint','trendelenburg':'your hip dropping when you stand on one leg','osteotomy':'a cut in the bone','arthrodesis':'a fusion'};
+const BASE = [
+  {k:'goal',l:'1. What is the goal of this conversation?',h:''},
+  {k:'open',l:'2. What will you say first, and why that first?',h:''},
+  {k:'share',l:'3. What will you share, and what will you leave out? Why?',h:''},
+  {k:'need',l:'4. What do you need from the other person or people?',h:''},
+  {k:'risk',l:'5. What could go wrong in this conversation, and how will you handle it?',h:''}];
+const TEMPLATES = {
+ call:{fields: BASE.concat([{k:'part2',l:'6. After the call: what will the patient hear from you, and why?',h:''}])},
+ edu:{fields: BASE.concat([{k:'part2',l:'6. After the call: what will the patient hear from you, and why?',h:''}])},
+ shared:{fields: BASE.concat([{k:'part2',l:'6. After the surgeon hangs up: what will the patient hear from you, and why?',h:''}])},
+ rts:{fields: BASE.concat([{k:'part2',l:'6. After the call: what will the patient hear from you, and why?',h:''}])}
+};
+const INTRO = 'Plan your approach in your own words. There are no hints here: decide what you will do and be ready to defend why. "Show my card" puts your plan in front of you during the scene. After your group opens the reflection, you can review your plan.';
+// Post-scene review: observations framed as questions, not grades
+function review(tpl, v){
+  const all = Object.values(v).join(' \n ').toLowerCase(); const f=(k)=>(v[k]||'').toLowerCase();
+  const out=[]; const add=(ok,yes,no)=>out.push(ok?{c:'ok',m:yes}:{c:'fix',m:no});
+  const jar=Object.keys(JARGON).filter(j=>JARGON[j] && new RegExp('\\b'+j+'\\b').test(tpl==='call'?f('part2'):all));
+  if(tpl==='call'){
+    add(/\d/.test(all),'Your plan gives the surgeon at least one measured finding.','Your plan never gives the surgeon a number. What did the surgeon need to hear to take the call seriously?');
+    add(/(last week|same as|unchanged|no change|plateau|stuck|trend|a week)/.test(all),'Your plan includes the trend, not only today\u2019s number.','Your plan gives a snapshot, not a trend. Would one visit\u2019s number have told the surgeon what he needed to know?');
+    add(/protocol|110|6 weeks|six weeks/.test(all),'Your plan connects the findings to the surgeon\u2019s protocol.','Your plan never ties the findings to his protocol. How would he know why this matters now?');
+    add(/extension/.test(all),'Your plan mentions the extension deficit.','Your plan leaves out the extension deficit. Was that a choice? Defend it.');
+    add(/(report|call (you|me)|let (you|me) know|warmth|redness|drainage|calf)/.test(all),'Your plan closes the loop on what to report back.','Your plan does not say what you would report back to the surgeon, or when.');
+    add(!/\b(you need|you\'?ll need|you will need|going to need)\b/.test(f('part2')),'Your Part 2 plan does not turn a possibility into a verdict.','Your Part 2 plan tells the patient what she needs. Is that what the surgeon said?');
+    add(/(home|exercise|program)/.test(f('part2')+f('share')+f('risk')),'Your plan asks about what is happening at home.','Your plan never asks about her home program. What might explain a one-week plateau?');
+  } else if(tpl==='edu'){
+    add(/\?/.test(f('open')) && !/\b(can\'?t|cannot|no,|not allowed|you have to|you need to)\b/.test(f('open')),'Your plan opens with a question, not a verdict.','Your plan opens with a rule or a verdict. What would she have told you if you had asked first?');
+    add(/(because|so that|why|heal|bone)/.test(all),'Your plan explains why, not only what.','Your plan gives rules without a reason. What reason would a 21-year-old act on?');
+    add(/(showcase|month|4 to 6|four to six|testing|criteria|strength)/.test(all) && !/(probably fine|you\'?ll be fine|should be fine|you\'?ll be ready)/.test(all),'Your plan addresses the showcase without promising it.','Either your plan skips the showcase or promises it. Which is harder to walk back later?');
+    add(/(option|or |instead|alternative)/.test(all),'Your plan offers options.','Your plan offers a verdict, not options. What could she actually choose between?');
+    add(/(home|exercise|show me|walk me)/.test(all),'Your plan asks what she is already doing at home.','Your plan never asks what she is doing at home. What might she have found online?');
+    add(!/any questions/.test(all),'Your plan checks understanding with something other than "any questions?"','"Any questions?" usually gets "no." How else could you find out what she understood?');
+  } else {
+    add(/(surgeon|dr\.|raman|restriction)/.test(f('open')+f('share')+f('need')),'Your plan gives the surgeon a clear place in the conversation.','Your plan does not say how the surgeon\u2019s position enters the conversation.');
+    add(/\?/.test(all) && /(mean|matter|important|job|work|employer|family|pay|money)/.test(all),'Your plan asks what returning to work means to him.','Your plan never asks what the restriction would mean at his job. What if he cannot follow it?');
+    add(/(agree|yes|goes along|says ok|okay)/.test(f('risk')),'Your plan anticipates an easy "yes" that may not be real.','Your plan does not consider that he might agree without meaning it.');
+    add(/(next|who|will write|note|progression|test|supervisor|monday)/.test(all),'Your plan names what happens next and who does it.','Your plan does not name next steps or who owns them.');
+  }
+  if(tpl==='rts'){
+    add(/\d/.test(all),'Your plan gives the surgeon her numbers.','Your plan never gives the surgeon a number. What did he need to make the decision?');
+    add(/(figure|84|hop)/.test(all),'Your plan names the criterion she has not met.','Your plan does not name which criterion she misses. How would he know what the decision turns on?');
+    add(/(retest|two weeks|2 weeks)/.test(all),'Your plan proposes a retest.','Your plan has no retest date. When does the decision get made again?');
+    add(/brace|tape/.test(all),'Your plan addresses the brace.','Your plan never mentions the brace or tape. What protects her in high-risk activity once she returns?');
+    add(/(tournament|mean|matter|spot)/.test(f('part2')),'Your plan asks what the tournament means to her.','Your plan never asks what the tournament means to her. What is she afraid of losing?');
+    add(/(walk me|show me|what have you|what did you|done on)/.test(all),'Your plan asks what she has been doing on her ankle.','Your plan does not ask what she has been doing on her ankle. What might she not volunteer?');
+  }
+  if(tpl!=='call'){ add(/(explain|tell me|in your (own )?words|walk me|back to me)/.test(f('part2')),'Your plan asks the patient to tell the plan back.','Your plan does not check that the patient can tell the plan back. How will you know it landed?'); }
+  if(tpl==='shared'){ add(/(supervisor|boss|employer|work)/.test(f('part2')),'Your plan helps him prepare for the conversation at work.','Your plan does not reach his supervisor. Where does this plan break if no one helps him with that conversation?'); }
+  if(jar.length) out.push({c:'fix',m:'Words the patient may not know: '+jar.map(j=>`"${j}" (plain: "${JARGON[j]}")`).join('; ')+'.'});
+  return out;
+}
+function cardTable(rows){ return `<table class="find">${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table>`; }
+
+function ptTool(D, role, rs, host, st){
+  const T=TEMPLATES[role.tool]; rs.v=rs.v||{};
+  const box=$(`<div class="card"><div class="lab">Plan your approach</div><div class="scene">${INTRO}</div></div>`);
+  T.fields.forEach(f=>{
+    const fld=$(`<div class="field"><label>${f.l}</label><textarea></textarea></div>`);
+    const ta=fld.querySelector('textarea'); ta.value=rs.v[f.k]||''; ta.oninput=()=>{rs.v[f.k]=ta.value;};
+    box.appendChild(fld);
+  });
+  const show=$('<button class="go" type="button">Show my card</button>');
+  const cardHost=$('<div></div>');
+  show.onclick=()=>{ cardHost.innerHTML=''; const c=$(`<div class="callcard"><div class="lab">Your plan \u00b7 keep this in front of you during the scene</div><ol></ol></div>`);
+    T.fields.forEach(f=>{ const val=(rs.v[f.k]||'').trim(); c.querySelector('ol').appendChild($(`<li><small>${esc(f.l.replace(/^\d+\.\s*/,''))}</small>${val?esc(val):'<i style="opacity:.6">(blank)</i>'}</li>`)); });
+    cardHost.appendChild(c); c.scrollIntoView({behavior:'smooth',block:'start'}); };
+  box.appendChild(show);
+  if(st && st.opened){
+    const rv=$('<button class="go ghost" type="button" style="margin-left:10px">Review my plan</button>'); const rh=$('<div></div>');
+    rv.onclick=()=>{ rh.innerHTML=''; const list=review(role.tool, rs.v);
+      rh.appendChild($(`<div class="note"><b>Your plan, reviewed after the scene.</b> These are questions to bring to your group, not a grade.${list.map(x=>`<div class="nudge ${x.c}">${esc(x.m)}</div>`).join('')}</div>`)); };
+    box.appendChild(rv); box.appendChild(cardHost); box.appendChild(rh);
+  } else {
+    box.appendChild(cardHost);
+    box.appendChild($('<div class="hint" style="color:var(--mute);font-size:13.5px;margin-top:8px">"Review my plan" unlocks after your group opens the reflection.</div>'));
+  }
+  host.appendChild(box);
+}
+
+function respondTool(D, role, rs, host, rerender){
+  const rows=D.docs[role.doc].rows;
+  const isCue=r=>/^(If |Before you hang up|At the end)/.test(r[0]);
+  const isSecret=r=>/do not say unless asked/i.test(r[0]);
+  const info=rows.filter(r=>!isCue(r)&&!isSecret(r)), cues=rows.filter(isCue), secrets=rows.filter(isSecret);
+  rs.log=rs.log||[]; rs.open=rs.open||{};
+  const box=$(`<div class="card"><div class="lab">Live response guide</div><div class="scene">Stay in character, and react honestly to what you hear. Do not rescue the PT. When the PT does one of the things below, tap it and say your line. Every tap is logged, so your group can see afterward which path the conversation took.</div></div>`);
+  if(!rs.t0){ const st=$('<button class="go" type="button">Start the scene clock</button>'); st.onclick=()=>{rs.t0=Date.now(); rerender();}; box.appendChild(st); }
+  else box.appendChild($(`<div class="hint" style="color:var(--mute);font-size:14px">Scene clock started. Taps are stamped with the time since start.</div>`));
+  secrets.forEach((r,i)=>{
+    const open=!!rs.open[i];
+    const s=$(`<div class="secret${open?' open':''}"><b>${open?'Revealed':'Held back'}:</b> ${r[1]}<div style="margin-top:6px"></div></div>`);
+    const b=$(`<button class="go ${open?'ghost':''}" type="button" style="margin-top:4px">${open?'Revealed at '+rs.open[i]:'The PT asked. I told them.'}</button>`);
+    if(!open) b.onclick=()=>{ rs.open[i]= rs.t0? fmt(Date.now()-rs.t0):'now'; rs.log.push({t:rs.open[i], x:'Revealed what I was holding back'}); rerender(); };
+    else b.disabled=true;
+    s.querySelector('div').appendChild(b); box.appendChild(s);
+  });
+  box.appendChild($('<div class="q" style="font-size:16.5px">What did the PT just do?</div>'));
+  cues.forEach((r,i)=>{
+    const used=rs.log.some(l=>l.i===i);
+    const lbl = r[0]==='Before you hang up' ? 'The call is wrapping up' : r[0]==='At the end' ? 'The scene is wrapping up' : r[0].replace(/^If /,'').replace(/^the PT /,'The PT ').replace(/^no one /,'No one ').replace(/^someone /,'Someone ').replace(/^you /,'You ');
+    const b=$(`<button class="cue${used?' used':''}" type="button">${lbl}</button>`);
+    const sayHost=$('<div></div>');
+    b.onclick=()=>{ const tm= rs.t0? fmt(Date.now()-rs.t0):'untimed'; rs.log.push({t:tm,i,x:lbl}); b.classList.add('used'); sayHost.innerHTML=''; sayHost.appendChild($(`<div class="say"><small>Your response</small>${r[1]}</div>`)); renderTrace(); };
+    box.appendChild(b); box.appendChild(sayHost);
+  });
+  const trace=$('<div><div class="lab" style="margin-top:14px">Your conversation path</div><ul class="trace"></ul></div>');
+  const renderTrace=()=>{ const ul=trace.querySelector('ul'); ul.innerHTML = rs.log.length? rs.log.map(l=>`<li><span>${l.t}</span>${esc(l.x)}</li>`).join('') : '<li style="color:var(--mute)">Nothing yet.</li>'; };
+  renderTrace(); box.appendChild(trace);
+  box.appendChild($(`<div class="note">After the scene, read your path to the group. Then tell them the moment you relaxed or tensed, and what the PT had just said.</div>`));
+  host.appendChild(box);
+}
+
+function observeTool(D, role, rs, host, rerender){
+  const rows=D.docs[role.doc].rows;
+  const chk=(rows.find(r=>/Check each one/i.test(r[0]))||['',''])[1];
+  const items=chk.split(/\.\s+/).map(s=>s.replace(/\.$/,'').trim()).filter(Boolean);
+  const notice=rows.filter(r=>/Also notice|Your job/i.test(r[0]));
+  rs.done=rs.done||{}; rs.note=rs.note||'';
+  const box=$(`<div class="card"><div class="lab">Observer checklist</div></div>`);
+  notice.forEach(r=>box.appendChild($(`<div class="scene"><b>${r[0]}:</b> ${r[1]}</div>`)));
+  const tm=$(`<div class="timer"><b>${rs.t0?'':'0:00'}</b></div>`); const tb=tm.querySelector('b');
+  if(!rs.t0){ const st=$('<button class="go" type="button">Start the scene clock</button>'); st.onclick=()=>{rs.t0=Date.now(); rerender();}; tm.appendChild(st); }
+  else { const tick=()=>{ if(!document.body.contains(tb)) return; tb.textContent=fmt(Date.now()-rs.t0); setTimeout(tick,1000); }; tick(); }
+  box.appendChild(tm);
+  box.appendChild($('<div class="hint" style="color:var(--mute);font-size:14px">Tap an item the moment it happens. Tap again to undo.</div>'));
+  items.forEach((it,i)=>{
+    const d=rs.done[i];
+    const row=$(`<div class="chk${d?' done':''}"><div class="box">${d?'\u2713':''}</div><div class="t">${esc(it)}</div><div class="stamp">${d||''}</div></div>`);
+    row.onclick=()=>{ if(rs.done[i]) delete rs.done[i]; else rs.done[i]= rs.t0? fmt(Date.now()-rs.t0):'\u2713'; rerender(); };
+    box.appendChild(row);
+  });
+  const nf=$('<div class="field"><label>Notes: the moment something shifted</label><textarea placeholder="What did the PT say just before the surgeon or patient relaxed, tensed, or opened up?"></textarea></div>');
+  const ta=nf.querySelector('textarea'); ta.value=rs.note; ta.oninput=()=>{rs.note=ta.value;}; box.appendChild(nf);
+  const fin=$('<button class="go" type="button">End of scene: show my summary</button>'); const sh=$('<div></div>');
+  fin.onclick=()=>{ const miss=items.filter((_,i)=>!rs.done[i]); const got=items.map((it,i)=>rs.done[i]?`<li><span>${rs.done[i]}</span>${esc(it)}</li>`:'').join('');
+    sh.innerHTML=''; sh.appendChild($(`<div class="note"><b>Happened:</b><ul class="trace">${got||'<li>None marked.</li>'}</ul><b>Never happened:</b><ul class="trace">${miss.map(m=>`<li>${esc(m)}</li>`).join('')||'<li>Everything happened.</li>'}</ul><div style="margin-top:8px">Lead the reflection with the "never happened" list: for each one, ask the group what it would have changed.</div></div>`)); };
+  box.appendChild(fin); box.appendChild(sh);
+  host.appendChild(box);
+}
+
+
+// ---------- Scene timer: visible to every role, counts down each step ----------
+(function(){ if(document.getElementById('stimer-css')) return; const s=document.createElement('style'); s.id='stimer-css'; s.textContent=`
+.stimer{position:sticky;top:0;z-index:20;background:#012D46;color:#fff;border-radius:14px;padding:14px 16px;margin:0 0 14px;box-shadow:0 4px 14px rgba(1,45,70,.18)}
+.stimer .row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.stimer .lbl{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:#8FC7D1;font-weight:700}
+.stimer .step{font-size:19px;font-weight:700;margin-top:2px}
+.stimer .who{font-size:14px;color:#D6EBEF;margin-top:2px}
+.stimer .clock{font-size:34px;font-weight:800;font-variant-numeric:tabular-nums;min-width:110px;text-align:right}
+.stimer.over .clock{color:#FFC98A}
+.stimer .move{display:none;margin-top:8px;background:#9A5B00;color:#fff;border-radius:8px;padding:6px 10px;font-weight:700;font-size:14.5px}
+.stimer.over .move{display:block}
+.stimer .dots{display:flex;gap:6px;margin-top:10px}
+.stimer .dots span{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.22)}
+.stimer .dots span.done{background:#8FC7D1}.stimer .dots span.now{background:#fff}
+.stimer .btns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.stimer button{font:inherit;font-size:14.5px;font-weight:700;border-radius:9px;padding:8px 14px;border:0;cursor:pointer}
+.stimer .b1{background:#fff;color:#012D46}.stimer .b2{background:rgba(255,255,255,.14);color:#fff}
+.stimer .tip{font-size:13px;color:#BFE3E8;margin-top:10px}
+@media (max-width:520px){.stimer .clock{font-size:28px;min-width:0}.stimer .step{font-size:17px}}`; document.head.appendChild(s); })();
+let STIMER=null;
+const beep=()=>{ try{ const a=new (window.AudioContext||window.webkitAudioContext)(); const o=a.createOscillator(), g=a.createGain(); o.frequency.value=880; g.gain.value=0.08; o.connect(g); g.connect(a.destination); o.start(); setTimeout(()=>{o.stop(); a.close();},350); }catch(e){} };
+function timerCard(c, st, rerender){
+  const steps=c.timer||[]; if(!steps.length) return null;
+  const T=st.timer=st.timer||{i:0, acc:0, runAt:null, done:false, rang:{}};
+  const box=$(`<div class="stimer"><div class="row"><div><div class="lbl"></div><div class="step"></div><div class="who"></div></div><div class="clock">0:00</div></div><div class="move"></div><div class="dots">${steps.map(()=>'<span></span>').join('')}</div><div class="btns"></div><div class="tip"><b>Timer keeper:</b> the observer, Person D (Person A in Scene 4); in a group of three, the surgeon player. Tap Start when the scene begins. When the timer turns amber and chimes, say the next step aloud and tap Next step. Everyone else can ignore this timer.</div></div>`);
+  const btns=box.querySelector('.btns');
+  const elapsed=()=>T.acc+(T.runAt?Date.now()-T.runAt:0);
+  const startBtn=$('<button class="b1" type="button"></button>');
+  startBtn.onclick=()=>{ if(T.done){ return; } if(T.runAt){ T.acc=elapsed(); T.runAt=null; } else { T.runAt=Date.now(); if(!st.sceneT0){ st.sceneT0=Date.now(); Object.values(st.rs||{}).forEach(rs=>{ if(!rs.t0) rs.t0=st.sceneT0; }); } } rerender(); };
+  const nextBtn=$('<button class="b2" type="button">Next step</button>');
+  nextBtn.onclick=()=>{ if(T.i<steps.length-1){ T.i++; T.acc=0; T.runAt= (T.runAt||T.i>0)? Date.now():null; } else { T.done=true; T.runAt=null; } rerender(); };
+  const resetBtn=$('<button class="b2" type="button">Restart timer</button>');
+  resetBtn.onclick=()=>{ st.timer={i:0, acc:0, runAt:null, done:false, rang:{}}; rerender(); };
+  btns.appendChild(startBtn); btns.appendChild(nextBtn); btns.appendChild(resetBtn);
+  const paint=()=>{
+    const s=steps[T.i], lim=s.sec*1000, e=elapsed(), rem=lim-e, over=rem<0 && !T.done;
+    box.querySelector('.lbl').textContent = T.done ? 'Scene timer · finished' : `Scene timer · step ${T.i+1} of ${steps.length}`;
+    box.querySelector('.step').textContent = T.done ? 'Time is up: rotate roles and open the next scene tab' : s.name;
+    box.querySelector('.who').textContent = T.done ? '' : s.who;
+    box.querySelector('.clock').textContent = T.done ? '' : (over? '+'+fmt(-rem) : fmt(rem+999));
+    box.classList.toggle('over', over);
+    const nx=steps[T.i+1]; box.querySelector('.move').textContent = over ? (nx? `Time: move to ${nx.name}. Tap Next step.` : 'Time: rotate roles and open the next scene tab. Tap Next step.') : '';
+    if(over && !T.rang[T.i]){ T.rang[T.i]=1; beep(); }
+    box.querySelectorAll('.dots span').forEach((d,k)=>{ d.className = (T.done||k<T.i)?'done':(k===T.i?'now':''); });
+    startBtn.textContent = T.done ? 'Done' : (T.runAt ? 'Pause' : (e>0||T.i>0 ? 'Resume' : 'Start'));
+    startBtn.disabled = T.done; nextBtn.disabled=T.done;
+  };
+  paint();
+  STIMER={paint, box};
+  return box;
+}
+setInterval(()=>{ if(STIMER && document.body.contains(STIMER.box)) STIMER.paint(); }, 500);
+
+window.ROLEKIT = {
+ render(D, c, st, host, rerender){
+  st.rs=st.rs||{};
+  const tc=timerCard(c, st, rerender); if(tc) host.appendChild(tc);
+  const pick=$(`<div class="card"><div class="lab">Choose your role</div><div class="scene">Open only your own role. Each one has its own tool for this scene.</div><div class="roles"></div><div class="warn">Surgeon and patient players: your screen holds information the PT should not see. If you share your screen, share only the shared brief.</div></div>`);
+  c.roles.forEach(r=>{ const b=$(`<button class="rolebtn${st.role===r.id?' on':''}" type="button"><b>${r.name}</b><span>${r.who}</span></button>`); b.onclick=()=>{ st.role = st.role===r.id? null : r.id; rerender(); }; pick.querySelector('.roles').appendChild(b); });
+  host.appendChild(pick);
+  if(!st.role) return;
+  const role=c.roles.find(r=>r.id===st.role); const rs=st.rs[role.id]=st.rs[role.id]||{};
+  if(st.sceneT0 && !rs.t0) rs.t0=st.sceneT0;
+  const card=$(`<div class="card"><div class="lab">${esc(D.docs[role.doc].title)}</div></div>`);
+  const rows = role.tool==='respond' ? D.docs[role.doc].rows.filter(r=>!/^(If |Before you hang up|At the end)/.test(r[0]) && !/do not say unless asked/i.test(r[0])) : role.tool==='observe' ? [] : D.docs[role.doc].rows;
+  if(rows.length){ card.appendChild($(cardTable(rows))); host.appendChild(card); }
+  if(['call','edu','shared','rts'].includes(role.tool)) ptTool(D, role, rs, host, st);
+  else if(role.tool==='respond') respondTool(D, role, rs, host, rerender);
+  else observeTool(D, role, rs, host, rerender);
+ }
+};
+})();
+</script>
+<script>(function(){
+const D = window.CASE;
+const $ = (h)=>{const t=document.createElement('template');t.innerHTML=h.trim();return t.content.firstChild;};
+const RL = {strong:'Strong choice', partly:'Partly there', detour:'Detour'};
+const app = document.getElementById('app');
+const state = {}; // per case: {flags, log, node, done}
+function S(cid){ if(!state[cid]) state[cid]={flags:{},log:[],node:null,done:false}; return state[cid]; }
+let cur = D.cases[0].id;
+
+// document modal
+const modal = $('<div class="modal"><div class="sheet"><div class="hd"><span></span><button type="button">Close</button></div><table></table></div></div>');
+document.body.appendChild(modal);
+modal.querySelector('button').onclick=()=>modal.classList.remove('on');
+modal.onclick=(e)=>{ if(e.target===modal) modal.classList.remove('on'); };
+function openDoc(id){ const d=D.docs[id]; modal.querySelector('.hd span').textContent=d.title;
+  modal.querySelector('table').innerHTML=d.rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join(''); modal.classList.add('on'); }
+
+function resolve(next, st){ if(typeof next==='string') return next; for(const c of next){ if(!c.if || st.flags[c.if]) return c.to; } }
+function caseObj(){ return D.cases.find(c=>c.id===cur); }
+
+function render(){
+  const y=window.scrollY; app.innerHTML='';
+  requestAnimationFrame(()=>window.scrollTo(0,y));
+  if (D.cases.length>1){
+    const tabs=$('<div class="tabs"></div>');
+    D.cases.forEach(c=>{ const b=$(`<button class="tab${c.id===cur?' on':''}" type="button">${c.tab}${S(c.id).done?'<span class="done">\u2713</span>':''}</button>`);
+      b.onclick=()=>{cur=c.id;render();window.scrollTo({top:app.offsetTop-10,behavior:'smooth'});}; tabs.appendChild(b); });
+    app.appendChild(tabs);
+  }
+  const c=caseObj(), st=S(c.id);
+  if(!st.node) st.node=c.start;
+  if(c.intro){ const i=$(`<div class="card"><div class="lab">${c.introLabel||'The patient'}</div><div class="scene">${c.intro}</div></div>`);
+    if(!c.roles) (c.docs||[]).forEach(d=>{const b=$(`<button class="docbtn" type="button">Open: ${D.docs[d].title}</button>`); b.onclick=()=>openDoc(d); i.appendChild(b);}); app.appendChild(i); }
+  if(c.roles && window.ROLEKIT && !st.done){ window.ROLEKIT.render(D, c, st, app, render); }
+  if(st.log.length){ const lg=$('<div class="log"></div>');
+    st.log.forEach(e=>lg.appendChild($(`<div class="item"><span class="k">${e.k}</span><span><span class="dot ${e.r}"></span>${e.t}${e.w?`<span style="display:block;color:var(--mute);font-size:13.5px;margin-top:3px">Your reasoning: ${e.w.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}</span>`:''}</span></div>`))); app.appendChild(lg); }
+  if(c.modes && !st.mode && !st.done){
+    const mc=$(`<div class="card"><div class="lab">How are you working?</div><div class="scene">${c.modes.prompt}</div><div class="roles"></div></div>`);
+    [['group','Working with a group',c.modes.group],['solo','Working on my own',c.modes.solo]].forEach(([k,label,desc])=>{
+      const b=$(`<button class="rolebtn" type="button"><b>${label}</b><span>${desc}</span></button>`); b.onclick=()=>{st.mode=k; render();}; mc.querySelector('.roles').appendChild(b); });
+    app.appendChild(mc); return;
+  }
+  if(c.modes && st.mode && !st.done){ app.appendChild($(`<div class="note"><b>${st.mode==='solo'?'Working on your own.':'Working with a group.'}</b> ${st.mode==='solo'?c.modes.soloHow:c.modes.groupHow}</div>`)); }
+  if(st.done){ app.appendChild(summary(c,st)); return; }
+  if(c.gate && !st.opened){ const g=$(`<div class="card"><div class="lab">After you play the scene</div><div class="scene">${c.gate}</div></div>`);
+    const gb=$('<button class="go" type="button">We played the scene: open the reflection</button>'); gb.onclick=()=>{st.opened=true;render();}; g.appendChild(gb); app.appendChild(g); return; }
+  app.appendChild(nodeCard(c,st,c.nodes[st.node]));
+}
+
+function nodeCard(c,st,n){
+  const card=$(`<div class="card${n.detour?' detour':''}"></div>`);
+  card.appendChild($(`<div class="lab">${n.detour?'Detour: '+(n.label||''):(n.label||'')}</div>`));
+  const scene = typeof n.scene==='function'? n.scene(st.flags) : n.scene;
+  if(scene) card.appendChild($(`<div class="scene">${scene}</div>`));
+  if(n.find){ card.appendChild($(`<table class="find">${n.find.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table>`)); }
+  if(n.doc){ const b=$(`<button class="docbtn" type="button">Open: ${D.docs[n.doc].title}</button>`); b.onclick=()=>openDoc(n.doc); card.appendChild(b); }
+  card.appendChild($(`<div class="q">${n.q}</div>`));
+  let why=null;
+  if(c.modes && st.mode==='solo'){
+    st.why = st.why || {};
+    why=$(`<div class="field"><label style="font-size:14.5px">Before you choose: why? One sentence.</label><textarea style="min-height:44px" placeholder="What in the report, protocol, or findings drives your choice?"></textarea></div>`);
+    const ta=why.querySelector('textarea'); ta.value=st.why[st.node]||''; ta.oninput=()=>{st.why[st.node]=ta.value;};
+    card.appendChild(why);
+  }
+  const box=$('<div></div>'); card.appendChild(box);
+  const fbHost=$('<div></div>'); card.appendChild(fbHost);
+  st.ord = st.ord || {};
+  if(!st.ord[st.node] || st.ord[st.node].length!==n.opts.length){ const a=n.opts.map((_,i)=>i); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} st.ord[st.node]=a; }
+  st.ord[st.node].map(i=>n.opts[i]).forEach((o,i)=>{
+    const b=$(`<button class="opt" type="button">${o.t}</button>`);
+    b.onclick=()=>{
+      if(o.retry){ b.classList.add('tried'); b.disabled=true;
+        fbHost.innerHTML=''; fbHost.appendChild($(`<div class="fb detour"><span class="chip detour">Not this one</span><div>${o.fb}</div>${o.src?`<span class="src">${o.src}</span>`:''}</div>`)); return; }
+      box.querySelectorAll('.opt').forEach(x=>x.disabled=true); b.classList.add('picked',o.r);
+      (o.set||[]).forEach(f=>st.flags[f]=true); (o.clear||[]).forEach(f=>delete st.flags[f]);
+      fbHost.innerHTML='';
+      const f=$(`<div class="fb ${o.r}"><span class="chip ${o.r}">${RL[o.r]}</span><div>${o.fb}</div>${o.src?`<span class="src">${o.src}</span>`:''}</div>`);
+      fbHost.appendChild(f);
+      const nx=resolve(o.next, st);
+      const go=$(`<button class="go" type="button">${nx==='END'?'See your path':(c.nodes[nx]&&c.nodes[nx].detour?'Take the detour':'Continue')}</button>`);
+      go.onclick=()=>{ st.log.push({k:(n.detour?'Detour':n.short||n.label), t:o.short||o.t, r:o.r, w:(st.mode==='solo' && st.why && st.why[st.node]) ? st.why[st.node].trim() : ''}); if(nx==='END'){st.done=true;} else st.node=nx; render(); window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); };
+      fbHost.appendChild(go);
+    };
+    box.appendChild(b);
+  });
+  return card;
+}
+
+function summary(c,st){
+  const cnt={strong:0,partly:0,detour:0}; st.log.forEach(e=>{ if(e.k!=='Detour') cnt[e.r]++; });
+  const s=$(`<div class="card sum"><div class="lab">Your path</div><h2>${c.endTitle||'End of the case'}</h2></div>`);
+  s.appendChild($(`<div class="tally"><div style="background:var(--tint2)"><b style="color:var(--green)">${cnt.strong}</b>strong first choices</div><div style="background:var(--tint)"><b style="color:var(--teal)">${cnt.partly}</b>partly there</div><div style="background:var(--amberT)"><b style="color:var(--amber)">${cnt.detour}</b>detours taken</div></div>`));
+  if(c.endText) s.appendChild($(`<div>${c.endText}</div>`));
+  if(c.modes && st.mode==='solo' && c.modes.soloEnd) s.appendChild($(`<div class="note">${c.modes.soloEnd}</div>`));
+  (c.endNotes||[]).forEach(nt=>{ if(!nt.if || st.flags[nt.if]) s.appendChild($(`<div class="note">${nt.text}</div>`)); });
+  if(c.think){ s.appendChild($(`<div><div class="lab" style="margin-top:14px">Worth thinking about</div><ul>${c.think.map(t=>`<li>${t}</li>`).join('')}</ul></div>`)); }
+  const r=$('<button class="go ghost" type="button">Start this case over</button>'); r.onclick=()=>{ delete state[c.id]; render(); window.scrollTo({top:0,behavior:'smooth'}); };
+  s.appendChild(r);
+  const nextCase = D.cases.find(x=>!S(x.id).done);
+  if(nextCase){ const nb=$(`<button class="go" type="button" style="margin-left:10px">Next: ${nextCase.tab}</button>`); nb.onclick=()=>{cur=nextCase.id;render();window.scrollTo({top:app.offsetTop-10,behavior:'smooth'});}; s.appendChild(nb); }
+  const pr=$('<button class="go ghost" type="button" style="margin-left:10px">Print for your own notes</button>'); pr.onclick=()=>window.print(); s.appendChild(pr);
+  return s;
+}
+render();
+})();
+</script>
+</body></html>
